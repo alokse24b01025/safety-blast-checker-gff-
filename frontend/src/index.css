@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Theme Colors - Sampled from the Weather Screenshot */
+  --bg: #111214;             /* Very dark slate/charcoal page background */
+  --panel: #1b1d20;          /* Slightly lighter charcoal card background */
+  --panel-raised: #26282b;   /* Raised inputs, inner fields background */
+  --border: rgba(255, 255, 255, 0.06); /* Extremely subtle border overlay */
+  --text: #ffffff;           /* Crisp white for headers & key details */
+  --text-muted: #9da3af;     /* Soft slate gray for descriptions & labels */
+  --text-faint: #656c7a;     /* Muted slate for placeholders & secondary text */
+
+  /* ACCENT STATUS COLORS - Smooth and vibrant */
+  --green: #4ade80;          /* Soft bright green (low risk/success) */
+  --yellow: #fbbf24;         /* Amber yellow (warning/caution) */
+  --orange: #fb923c;         /* Safety orange */
+  --red: #f87171;            /* Pastel red (critical/alert) */
+
+  --green-dim: rgba(74, 222, 128, 0.08);
+  --yellow-dim: rgba(251, 191, 36, 0.08);
+  --orange-dim: rgba(251, 146, 60, 0.08);
+  --red-dim: rgba(248, 113, 113, 0.08);
+
+  /* TYPOGRAPHY */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+
+  /* CORNER RADIUS - High-end rounded cards design */
+  --border-radius-large: 24px;
+  --border-radius-medium: 16px;
+  --border-radius-small: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+a {
+  color: var(--yellow);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+::selection {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+
+:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
