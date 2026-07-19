@@ -84,7 +84,7 @@ rests with the authorised blasting officer."""
     else:
         logger.info("Calling Google Gemini API...")
         try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key.strip()}"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key={api_key.strip()}"
             headers = {"Content-Type": "application/json"}
             payload = {
                 "contents": [
@@ -101,7 +101,7 @@ rests with the authorised blasting officer."""
                 data = response.json()
                 text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
                 if text:
-                    return text, True, "GEMINI 1.5"
+                    return text, True, "GEMINI 3.1"
                 return fallback_recommendation(risk_level, issues), False, "NONE"
         except Exception as ge:
             logger.warning(f"Gemini API error, using fallback recommendation: {str(ge)}")
