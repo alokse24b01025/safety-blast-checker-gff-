@@ -141,20 +141,20 @@ export default function App() {
     <div className="min-h-screen bg-mining-dark flex flex-col font-sans">
       {/* Header */}
       <header className="bg-mining-card/80 backdrop-blur-md border-b border-mining-border sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 flex justify-between items-center">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span className="text-mining-accent text-lg sm:text-2xl font-black">▲</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2 flex justify-between items-center">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="text-mining-accent text-base sm:text-xl font-black">▲</span>
             <div>
               <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white leading-tight tracking-wider uppercase">
                 Mining Intelligence Platform
               </h1>
-              <p className="text-[8px] sm:text-[10px] text-gray-400 hidden sm:block">
+              <p className="text-[8px] sm:text-[9px] text-gray-400 hidden sm:block">
                 Capstone Development Program — Alok's Modules
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
 
             {/* User Session Info */}
             <div className="hidden md:flex flex-col text-right">
@@ -164,11 +164,11 @@ export default function App() {
 
             <button
               onClick={handleLogout}
-              className="p-1.5 sm:p-2 bg-mining-dark hover:bg-red-950/20 border border-gray-500 rounded-xl text-gray-300 hover:text-red-400 transition-colors"
+              className="p-1 sm:p-1.5 bg-mining-dark hover:bg-red-950/20 border border-gray-500 rounded-xl text-gray-300 hover:text-red-400 transition-colors"
               title="Sign Out"
             >
-              <LogOut size={14} className="sm:hidden" />
-              <LogOut size={16} className="hidden sm:block" />
+              <LogOut size={13} className="sm:hidden" />
+              <LogOut size={15} className="hidden sm:block" />
             </button>
           </div>
         </div>
@@ -176,39 +176,42 @@ export default function App() {
 
       {/* Main Tab Navigation */}
       <nav className="border-b border-mining-border bg-mining-dark/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex gap-2 overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex gap-2 overflow-x-auto">
           <button
             onClick={() => setActiveTab('checklist')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
               activeTab === 'checklist'
                 ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
                 : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
             }`}
           >
-            <ClipboardList size={14} />
-            Blast Safety Checklist (Module 1)
+            <ClipboardList size={13} />
+            <span className="hidden sm:inline">Blast Safety Checklist (Module 1)</span>
+            <span className="sm:hidden">Checklist</span>
           </button>
           <button
             onClick={() => setActiveTab('design')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
               activeTab === 'design'
                 ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
                 : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
             }`}
           >
-            <Flame size={14} />
-            Blast Design Optimisation (Module 2)
+            <Flame size={13} />
+            <span className="hidden sm:inline">Blast Design Optimisation (Module 2)</span>
+            <span className="sm:hidden">Design Opt</span>
           </button>
           <button
             onClick={() => setActiveTab('incidents')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
               activeTab === 'incidents'
                 ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
                 : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
             }`}
           >
-            <ShieldAlert size={14} />
-            Incident Registers &amp; Audits
+            <ShieldAlert size={13} />
+            <span className="hidden sm:inline">Incident Registers &amp; Audits</span>
+            <span className="sm:hidden">Incidents</span>
           </button>
         </div>
       </nav>
