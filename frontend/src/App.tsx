@@ -183,7 +183,7 @@ export default function App() {
             }`}
           >
             <ClipboardList size={13} />
-            <span className="hidden sm:inline">Blast Safety Checklist (Module 1)</span>
+            <span className="hidden sm:inline">Blast Safety Checklist</span>
             <span className="sm:hidden">Checklist</span>
           </button>
           <button
@@ -195,7 +195,7 @@ export default function App() {
             }`}
           >
             <Flame size={13} />
-            <span className="hidden sm:inline">Blast Design Optimisation (Module 2)</span>
+            <span className="hidden sm:inline">Blast Design Optimisation</span>
             <span className="sm:hidden">Design Opt</span>
           </button>
           <button
