@@ -36,8 +36,8 @@ async def create_submission(payload: SubmissionCreate, db=Depends(get_mongo_db))
         # Evaluate using rule engine
         assessment = evaluate_blast_site(data)
         
-        # Generate Claude recommendation
-        ai_rec, ai_generated = await generate_recommendation(
+        # Generate Claude/Gemini recommendation
+        ai_rec, ai_generated, ai_provider = await generate_recommendation(
             risk_level=assessment["risk_level"],
             total_score=assessment["total_score"],
             issues=assessment["issues"]
@@ -54,6 +54,7 @@ async def create_submission(payload: SubmissionCreate, db=Depends(get_mongo_db))
             "issues": assessment["issues"],
             "ai_recommendation": ai_rec,
             "ai_generated": ai_generated,
+            "ai_provider": ai_provider,
             "payload": data,
             "officer_decision": None,
             "officer_name": None,

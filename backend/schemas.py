@@ -76,6 +76,7 @@ class SubmissionResponse(BaseModel):
     issues: List[FlaggedIssue]
     ai_recommendation: Optional[str] = None
     ai_generated: Optional[bool] = False
+    ai_provider: Optional[str] = None
     officer_decision: Optional[str] = None
     officer_name: Optional[str] = None
     officer_comments: Optional[str] = None
