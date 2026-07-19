@@ -141,7 +141,7 @@ export default function App() {
     <div className="min-h-screen bg-mining-dark flex flex-col font-sans">
       {/* Header */}
       <header className="bg-mining-card/80 backdrop-blur-md border-b border-mining-border sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4.5 flex justify-between items-center">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="text-mining-accent text-base sm:text-xl font-black">▲</span>
             <div>
@@ -155,8 +155,7 @@ export default function App() {
 
             {/* User Session Info */}
             <div className="hidden md:flex flex-col text-right">
-              <span className="text-xs text-white font-bold">{fullName}</span>
-              <span className="text-[9px] text-mining-gold font-mono uppercase tracking-widest">{role} Session</span>
+              <span className="text-xs text-mining-gold font-bold font-mono uppercase tracking-widest">{role} Session</span>
             </div>
 
             <button
