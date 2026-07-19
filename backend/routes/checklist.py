@@ -8,6 +8,7 @@ from schemas import SubmissionCreate, SubmissionResponse, OfficerReviewInput
 from rule_engine import evaluate_blast_site
 from ai_recommendations import generate_recommendation
 from pdf_generator import build_checklist_pdf
+from routes.auth import require_role
 
 router = APIRouter(prefix="/api/submissions", tags=["Checklist Submissions"])
 
@@ -106,7 +107,12 @@ async def get_submission(submission_id: str, db=Depends(get_mongo_db)):
     return serialize_doc(doc)
 
 @router.post("/{submission_id}/review")
-async def review_submission(submission_id: str, review: OfficerReviewInput, db=Depends(get_mongo_db)):
+async def review_submission(
+    submission_id: str, 
+    review: OfficerReviewInput, 
+    db=Depends(get_mongo_db),
+    current_user=Depends(require_role("OFFICER"))
+):
     if not ObjectId.is_valid(submission_id):
         raise HTTPException(status_code=400, detail="Invalid submission ID format")
         

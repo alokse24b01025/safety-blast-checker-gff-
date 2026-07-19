@@ -215,7 +215,7 @@ export default function App() {
       {/* Main Container */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className={activeTab === 'checklist' ? '' : 'hidden'}>
-          <ChecklistTab onSubmissionSuccess={triggerDataRefresh} />
+          <ChecklistTab onSubmissionSuccess={triggerDataRefresh} userRole={role} />
         </div>
         <div className={activeTab === 'design' ? '' : 'hidden'}>
           <BlastDesignTab />

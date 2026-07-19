@@ -40,9 +40,10 @@ const initialState = {
 
 interface ChecklistTabProps {
   onSubmissionSuccess: () => void;
+  userRole: string;
 }
 
-export default function ChecklistTab({ onSubmissionSuccess }: ChecklistTabProps) {
+export default function ChecklistTab({ onSubmissionSuccess, userRole }: ChecklistTabProps) {
   const [form, setForm] = useState(initialState);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -647,7 +648,17 @@ export default function ChecklistTab({ onSubmissionSuccess }: ChecklistTabProps)
             <div className="border-t border-mining-border pt-4">
               <h4 className="text-xs font-bold text-white mb-3">Authorised Blasting Officer Sign-Off</h4>
 
-              {result.officer_decision ? (
+              {userRole !== 'OFFICER' ? (
+                <div className="bg-mining-dark/40 border border-mining-border p-4 rounded-xl text-center">
+                  <ShieldAlert size={20} className="text-mining-accent mx-auto mb-2" />
+                  <p className="text-xs text-gray-300">
+                    Your session is logged in as a <strong className="text-mining-accent">{userRole || 'SUPERVISOR'}</strong>.
+                  </p>
+                  <p className="text-[10px] text-gray-500 mt-1">
+                    Sign-off, approval, and rejection features are restricted to Blasting Officers only.
+                  </p>
+                </div>
+              ) : result.officer_decision ? (
                 <div className={`p-4 rounded-xl border ${
                   result.officer_decision === 'APPROVED' ? 'bg-green-950/30 border-green-900 text-green-300' :
                   result.officer_decision === 'HOLD' ? 'bg-yellow-950/30 border-yellow-900 text-yellow-300' :
