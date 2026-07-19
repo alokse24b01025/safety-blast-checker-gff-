@@ -4,6 +4,14 @@ import SignatureCanvas from './SignatureCanvas.tsx';
 import RiskBeacon from './RiskBeacon.tsx';
 import { submitChecklist, submitOfficerReview, pdfDownloadUrl } from '../api/client.ts';
 
+const getTodayDateString = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 const initialState = {
   site_name: '',
   blast_id: '',
@@ -11,7 +19,7 @@ const initialState = {
   rainfall_mm: '',
   wind_speed_kmh: '',
   lightning_warning: false,
-  blast_date: '',
+  blast_date: getTodayDateString(),
   blast_time: '',
   supervisor_available: true,
   blasting_officer_available: true,

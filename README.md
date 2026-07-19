@@ -1,6 +1,6 @@
 # AI Blast Safety Assistant
 
-A rule-based, AI-assisted pre-blast safety evaluation system for mining blasting operations, built for the GFF AI Academy Enterprise Solution assignment (Alok's module).
+A rule-based, AI-assisted pre-blast safety evaluation system for mining blasting operations, built for the GFF AI Academy Enterprise Solution assignment.
 
 > **Mandatory disclaimer:** This is a student prototype for learning and demonstration only. It is a decision-support aid and does **not** constitute blast approval. All operational use requires review and sign-off by an appropriately qualified, authorised blasting professional in accordance with applicable laws and site safety standards.
 
@@ -32,7 +32,7 @@ blast-safety-assistant/
 │   ├── models_sql.py         # SQLAlchemy SQL models
 │   ├── schemas.py            # Pydantic validation schemas
 │   ├── rule_engine.py        # Deterministic safety risk engine
-│   ├── ai_recommendations.py # AI advisory engine (Claude API)
+│   ├── ai_recommendations.py # AI advisory engine (gemini api)
 │   ├── pdf_generator.py      # ReportLab PDF checklist generator
 │   └── requirements.txt      # Python dependencies
 ├── documentation/            # Wireframes, architecture notes, and PDFs

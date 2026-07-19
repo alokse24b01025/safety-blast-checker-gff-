@@ -215,15 +215,15 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'checklist' && (
+        <div className={activeTab === 'checklist' ? '' : 'hidden'}>
           <ChecklistTab onSubmissionSuccess={triggerDataRefresh} />
-        )}
-        {activeTab === 'design' && (
+        </div>
+        <div className={activeTab === 'design' ? '' : 'hidden'}>
           <BlastDesignTab />
-        )}
-        {activeTab === 'incidents' && (
+        </div>
+        <div className={activeTab === 'incidents' ? '' : 'hidden'}>
           <IncidentLogsTab key={refreshTrigger} />
-        )}
+        </div>
       </main>
 
       {/* Footer */}
