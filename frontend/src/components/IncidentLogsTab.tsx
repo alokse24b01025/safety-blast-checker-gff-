@@ -9,7 +9,6 @@ export default function IncidentLogsTab() {
   const [submittingLog, setSubmittingLog] = useState(false);
   const [logError, setLogError] = useState<string | null>(null);
 
-  // Form states
   const [blastId, setBlastId] = useState('');
   const [incidentType, setIncidentType] = useState('');
   const [description, setDescription] = useState('');
@@ -46,11 +45,9 @@ export default function IncidentLogsTab() {
         description,
         severity
       });
-      // Clear form
       setBlastId('');
       setIncidentType('');
       setDescription('');
-      // Reload lists
       await loadData();
     } catch (err: any) {
       setLogError(err.message || 'Failed to submit incident log. Make sure you are logged in.');
@@ -61,58 +58,57 @@ export default function IncidentLogsTab() {
 
   const getSeverityStyle = (sev: string) => {
     switch (sev) {
-      case 'CRITICAL': return 'bg-red-950/40 text-red-400 border border-red-800';
-      case 'HIGH': return 'bg-orange-950/40 text-orange-400 border border-orange-800';
-      case 'MEDIUM': return 'bg-yellow-950/40 text-yellow-400 border border-yellow-800';
-      default: return 'bg-blue-950/40 text-blue-400 border border-blue-800';
+      case 'CRITICAL': return 'bg-[var(--red-dim)] text-[var(--red)] border border-[var(--red)]';
+      case 'HIGH': return 'bg-[var(--orange-dim)] text-[var(--orange)] border border-[var(--orange)]';
+      case 'MEDIUM': return 'bg-[var(--yellow-dim)] text-[var(--yellow)] border border-[var(--yellow)]';
+      default: return 'bg-[var(--panel-raised)] text-[var(--text-muted)] border border-[var(--border)]';
     }
   };
 
   const getRiskLevelStyle = (level: string) => {
     switch (level) {
-      case 'RED': return 'bg-red-950/40 text-red-400 border border-red-800';
-      case 'ORANGE': return 'bg-orange-950/40 text-orange-400 border border-orange-800';
-      case 'YELLOW': return 'bg-yellow-950/40 text-yellow-400 border border-yellow-800';
-      default: return 'bg-green-950/40 text-green-400 border border-green-800';
+      case 'RED': return 'bg-[var(--red-dim)] text-[var(--red)] border border-[var(--red)]';
+      case 'ORANGE': return 'bg-[var(--orange-dim)] text-[var(--orange)] border border-[var(--orange)]';
+      case 'YELLOW': return 'bg-[var(--yellow-dim)] text-[var(--yellow)] border border-[var(--yellow)]';
+      default: return 'bg-[var(--green-dim)] text-[var(--green)] border border-[var(--green)]';
     }
   };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Log Form Intake */}
       <div className="lg:col-span-4 flex flex-col gap-6">
         <form onSubmit={handleLogSubmit} className="bg-mining-card border border-mining-border p-6 rounded-2xl flex flex-col gap-4">
           <div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            <h2 className="text-lg font-bold text-[var(--text)] flex items-center gap-2">
               <ShieldAlert className="text-mining-accent" /> Log Safety Incident
             </h2>
-            <p className="text-xs text-gray-400">Record a safety violation or active site incident</p>
+            <p className="text-xs text-[var(--text-muted)]">Record a safety violation or active site incident</p>
           </div>
 
           <div className="border-t border-mining-border pt-4 flex flex-col gap-3">
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-400">Blast ID Correlation</label>
+              <label className="text-xs text-[var(--text-muted)]">Blast ID Correlation</label>
               <input
                 type="text" required value={blastId}
                 onChange={(e) => setBlastId(e.target.value)}
                 placeholder="e.g. BLAST-001"
-                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-mining-accent"
+                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-2 text-xs text-[var(--text)] focus:outline-none focus:border-mining-accent"
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-400">Incident Category</label>
+              <label className="text-xs text-[var(--text-muted)]">Incident Category</label>
               <input
                 type="text" required value={incidentType}
                 onChange={(e) => setIncidentType(e.target.value)}
                 placeholder="e.g. Geofence Intrusion, Misfire"
-                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-2 text-xs text-white focus:outline-none"
+                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-2 text-xs text-[var(--text)] focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-400">Incident Severity</label>
+              <label className="text-xs text-[var(--text-muted)]">Incident Severity</label>
               <select
                 value={severity} onChange={(e) => setSeverity(e.target.value)}
-                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-1.5 text-xs text-white"
+                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-1.5 text-xs text-[var(--text)]"
               >
                 <option value="LOW">LOW RISK</option>
                 <option value="MEDIUM">MEDIUM RISK</option>
@@ -121,18 +117,18 @@ export default function IncidentLogsTab() {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-400">Detailed Description</label>
+              <label className="text-xs text-[var(--text-muted)]">Detailed Description</label>
               <textarea
                 required value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4} placeholder="Describe the safety violation details..."
-                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-2 text-xs text-white focus:outline-none resize-none"
+                className="bg-mining-dark border border-mining-border rounded-lg px-3 py-2 text-xs text-[var(--text)] focus:outline-none resize-none"
               />
             </div>
           </div>
 
           {logError && (
-            <div className="bg-red-950/20 border border-red-800 text-red-400 p-2.5 rounded-lg text-xs">
+            <div className="bg-[var(--red-dim)] border border-[var(--red)] text-[var(--red)] p-2.5 rounded-lg text-xs">
               {logError}
             </div>
           )}
@@ -147,33 +143,31 @@ export default function IncidentLogsTab() {
         </form>
       </div>
 
-      {/* History and Logs list */}
       <div className="lg:col-span-8 flex flex-col gap-6">
-        {/* Incident Logs List */}
         <div className="bg-mining-card border border-mining-border p-6 rounded-2xl flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider text-mining-accent">Logged Safety Incidents</h3>
-              <p className="text-xs text-gray-400">Real-time incident registers with operator logging identities</p>
+              <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider text-mining-accent">Logged Safety Incidents</h3>
+              <p className="text-xs text-[var(--text-muted)]">Real-time incident registers with operator logging identities</p>
             </div>
-             <button
+            <button
               onClick={loadData}
               disabled={loading}
-              className="p-1.5 bg-mining-dark hover:bg-zinc-800 border border-gray-500 rounded-lg text-gray-300 transition-colors"
+              className="p-1.5 bg-mining-dark hover:bg-[var(--panel)] border border-[var(--border)] rounded-lg text-[var(--text-muted)] transition-colors"
             >
               <RefreshCcw size={14} className={loading ? "animate-spin" : ""} />
             </button>
           </div>
 
           {incidents.length === 0 ? (
-            <div className="bg-mining-dark/40 border border-mining-border text-gray-400 py-8 px-4 rounded-xl text-center text-xs">
+            <div className="bg-[var(--panel-raised)] border border-mining-border text-[var(--text-muted)] py-8 px-4 rounded-xl text-center text-xs">
               No incidents logged on site.
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-mining-border text-gray-400">
+                  <tr className="border-b border-mining-border text-[var(--text-muted)]">
                     <th className="py-2.5 px-3">Date</th>
                     <th className="py-2.5 px-3">Blast ID</th>
                     <th className="py-2.5 px-3">Type</th>
@@ -182,18 +176,18 @@ export default function IncidentLogsTab() {
                     <th className="py-2.5 px-3">Details</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-mining-border/40 text-gray-300">
+                <tbody className="divide-y divide-mining-border/40 text-[var(--text-muted)]">
                   {incidents.map((log) => (
-                    <tr key={log.id} className="hover:bg-mining-dark/20">
-                      <td className="py-3 px-3 text-gray-400 whitespace-nowrap">{new Date(log.logged_at).toLocaleString()}</td>
+                    <tr key={log.id} className="hover:bg-[var(--panel-raised)]">
+                      <td className="py-3 px-3 text-[var(--text-muted)] whitespace-nowrap">{new Date(log.logged_at).toLocaleString()}</td>
                       <td className="py-3 px-3 font-mono text-mining-gold">{log.blast_id}</td>
-                      <td className="py-3 px-3 font-semibold text-white">{log.incident_type}</td>
+                      <td className="py-3 px-3 font-semibold text-[var(--text)]">{log.incident_type}</td>
                       <td className="py-3 px-3">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${getSeverityStyle(log.severity)}`}>
                           {log.severity}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-gray-400">{log.logged_by}</td>
+                      <td className="py-3 px-3 text-[var(--text-muted)]">{log.logged_by}</td>
                       <td className="py-3 px-3 max-w-[200px] truncate" title={log.description}>{log.description}</td>
                     </tr>
                   ))}
@@ -203,22 +197,21 @@ export default function IncidentLogsTab() {
           )}
         </div>
 
-        {/* Audit Log Submission History */}
         <div className="bg-mining-card border border-mining-border p-6 rounded-2xl flex flex-col gap-4">
           <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider text-mining-accent">Tamper-Evident Checklist Audit Logs</h3>
-            <p className="text-xs text-gray-400">Secured cryptographic SHA-256 hashes verifying audit records</p>
+            <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider text-mining-accent">Tamper-Evident Checklist Audit Logs</h3>
+            <p className="text-xs text-[var(--text-muted)]">Secured cryptographic SHA-256 hashes verifying audit records</p>
           </div>
 
           {historyList.length === 0 ? (
-            <div className="bg-mining-dark/40 border border-mining-border text-gray-400 py-8 px-4 rounded-xl text-center text-xs">
+            <div className="bg-[var(--panel-raised)] border border-mining-border text-[var(--text-muted)] py-8 px-4 rounded-xl text-center text-xs">
               No checklist history records available.
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-mining-border text-gray-400">
+                  <tr className="border-b border-mining-border text-[var(--text-muted)]">
                     <th className="py-2.5 px-3">Site</th>
                     <th className="py-2.5 px-3">Blast ID</th>
                     <th className="py-2.5 px-3">Score</th>
@@ -227,11 +220,11 @@ export default function IncidentLogsTab() {
                     <th className="py-2.5 px-3 text-right">Report</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-mining-border/40 text-gray-300">
+                <tbody className="divide-y divide-mining-border/40 text-[var(--text-muted)]">
                   {historyList.map((row) => (
-                    <tr key={row.id} className="hover:bg-mining-dark/20">
-                      <td className="py-3 px-3 font-semibold text-white">{row.site_name}</td>
-                      <td className="py-3 px-3 font-mono text-gray-400">{row.blast_id}</td>
+                    <tr key={row.id} className="hover:bg-[var(--panel-raised)]">
+                      <td className="py-3 px-3 font-semibold text-[var(--text)]">{row.site_name}</td>
+                      <td className="py-3 px-3 font-mono text-[var(--text-muted)]">{row.blast_id}</td>
                       <td className="py-3 px-3 font-mono">{row.total_score}</td>
                       <td className="py-3 px-3">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${getRiskLevelStyle(row.risk_level)}`}>
@@ -246,7 +239,7 @@ export default function IncidentLogsTab() {
                           href={pdfDownloadUrl(row.id)}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-2.5 py-1 bg-mining-dark hover:bg-mining-border border border-mining-border text-white text-[10px] font-medium rounded transition-colors"
+                          className="px-2.5 py-1 bg-mining-dark hover:bg-[var(--panel)] border border-mining-border text-[var(--text)] text-[10px] font-medium rounded transition-colors"
                         >
                           PDF
                         </a>

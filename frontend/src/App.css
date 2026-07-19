@@ -7,7 +7,7 @@
 
 .app-header {
   border-bottom: 1px solid var(--border);
-  background: rgba(17, 18, 20, 0.85);
+  background: rgba(20, 17, 15, 0.9);
   backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
@@ -33,10 +33,9 @@
 }
 
 .brand-mark {
-  color: var(--yellow);
+  color: var(--orange);
   font-size: 26px;
   line-height: 1;
-  text-shadow: 0 0 16px rgba(251, 191, 36, 0.4);
   transition: transform 0.4s ease;
 }
 
@@ -47,8 +46,8 @@
 .brand h1 {
   font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em; /* Modern tight spacing */
+  font-weight: 600;
+  letter-spacing: -0.01em;
   margin: 0;
   color: var(--text);
 }
@@ -92,9 +91,9 @@
 
 .column-title {
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
   margin: 0 0 16px;
@@ -106,7 +105,7 @@
   color: var(--text-faint);
   padding: 24px 20px;
   border-top: 1px solid var(--border);
-  background: rgba(17, 18, 20, 0.4);
+  background: rgba(20, 17, 15, 0.5);
   line-height: 1.6;
 }
 

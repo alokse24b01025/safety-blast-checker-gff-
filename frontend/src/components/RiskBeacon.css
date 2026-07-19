@@ -2,20 +2,20 @@
   display: flex;
   gap: 28px;
   align-items: center;
-  background: var(--panel); /* #1b1d20 */
+  background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-large); /* 24px */
+  border-radius: var(--border-radius-large);
   padding: 24px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .beacon-stack {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: var(--panel-raised); /* #26282b */
+  background: var(--panel-raised);
   padding: 16px;
-  border-radius: var(--border-radius-medium); /* 16px */
+  border-radius: var(--border-radius-medium);
   border: 1px solid var(--border);
 }
 
@@ -35,7 +35,7 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #31353a;
+  background: var(--panel-raised);
   transition: all 0.3s ease;
 }
 
@@ -47,7 +47,7 @@
 
 .beacon-light.active .beacon-core {
   background: #ffffff;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 @keyframes beacon-pulse {
@@ -108,14 +108,14 @@
     gap: 20px;
     padding: 20px;
   }
-  
+
   .beacon-readout {
     min-width: unset;
     width: 100%;
     align-items: center;
     text-align: center;
   }
-  
+
   .beacon-meaning {
     text-align: center;
     margin: 4px auto 0;

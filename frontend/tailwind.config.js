@@ -10,9 +10,9 @@ export default {
         mining: {
           dark: 'var(--bg)',
           card: 'var(--panel)',
-          accent: 'var(--yellow)',
+          accent: 'var(--orange)',
           border: 'var(--border)',
-          gold: 'var(--yellow)',
+          gold: 'var(--orange)',
           green: 'var(--green)',
           red: 'var(--red)',
           orange: 'var(--orange)'

@@ -17,7 +17,7 @@ export default function SignatureCanvas({ onSave, onClear }: SignatureCanvasProp
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.strokeStyle = '#ffffff';
+    ctx.strokeStyle = '#e8e1d8';
     ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
@@ -89,7 +89,14 @@ export default function SignatureCanvas({ onSave, onClear }: SignatureCanvasProp
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <div className="border border-mining-border bg-mining-dark rounded-lg overflow-hidden relative">
+      <div
+        className="w-full overflow-hidden relative"
+        style={{
+          border: '1px solid var(--border)',
+          background: 'var(--panel-raised)',
+          borderRadius: 'var(--border-radius-small)',
+        }}
+      >
         <canvas
           ref={canvasRef}
           width={400}
@@ -104,7 +111,10 @@ export default function SignatureCanvas({ onSave, onClear }: SignatureCanvasProp
           onTouchEnd={stopDrawing}
         />
         {!hasDrawed && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-gray-500 text-sm">
+          <div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none text-sm"
+            style={{ color: 'var(--text-faint)' }}
+          >
             Sign here using your mouse or touch screen
           </div>
         )}
@@ -113,7 +123,10 @@ export default function SignatureCanvas({ onSave, onClear }: SignatureCanvasProp
         <button
           type="button"
           onClick={clearCanvas}
-          className="px-3 py-1 text-xs bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors"
+          className="px-3 py-1 text-xs rounded-md transition-colors"
+          style={{ background: 'var(--panel-raised)', color: 'var(--text)', border: '1px solid var(--border)' }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--panel)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--panel-raised)')}
         >
           Clear Signature
         </button>
