@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+import bcrypt
 from typing import Optional
 
 from database_sql import get_db
@@ -13,14 +13,16 @@ from config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login-form")
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    try:
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    except Exception:
+        return False
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
+def get_password_hash(password: str) -> str:
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
@@ -34,23 +36,30 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 # Seed default accounts if they don't exist
 def seed_default_users(db: Session):
-    # Check if we already have users
-    if db.query(User).count() == 0:
+    supervisor = db.query(User).filter(User.username == "supervisor").first()
+    if not supervisor:
         supervisor = User(
             username="supervisor",
             password_hash=get_password_hash("supervisor123"),
             role="SUPERVISOR",
-            full_name="John Supervisor"
+            full_name="Supervisor"
         )
+        db.add(supervisor)
+    else:
+        if supervisor.full_name == "John Supervisor":
+            supervisor.full_name = "Supervisor"
+            db.commit()
+
+    officer = db.query(User).filter(User.username == "officer").first()
+    if not officer:
         officer = User(
             username="officer",
             password_hash=get_password_hash("officer123"),
             role="OFFICER",
             full_name="Alok Blasting Officer"
         )
-        db.add(supervisor)
         db.add(officer)
-        db.commit()
+    db.commit()
 
 # Dependency to check user
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:

@@ -141,16 +141,13 @@ export default function App() {
     <div className="min-h-screen bg-mining-dark flex flex-col font-sans">
       {/* Header */}
       <header className="bg-mining-card/80 backdrop-blur-md border-b border-mining-border sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex justify-between items-center">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="text-mining-accent text-base sm:text-xl font-black">▲</span>
             <div>
               <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white leading-tight tracking-wider uppercase">
                 Mining Intelligence Platform
               </h1>
-              <p className="text-[8px] sm:text-[9px] text-gray-400 hidden sm:block">
-                Capstone Development Program — Alok's Modules
-              </p>
             </div>
           </div>
 
