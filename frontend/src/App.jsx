@@ -71,6 +71,7 @@ export default function App() {
               <p>Pre-blast risk evaluation &amp; checklist generation</p>
             </div>
           </div>
+
           <div className="disclaimer-banner">
             AI provides recommendations only. Final blast approval always rests with an
             authorised blasting officer.

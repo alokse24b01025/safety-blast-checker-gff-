@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Theme Colors - Sampled from the Weather Screenshot */
   --bg: #111214;             /* Very dark slate/charcoal page background */
@@ -32,47 +36,103 @@
   --border-radius-small: 12px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html, body {
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
-button, input, select, textarea {
-  font-family: inherit;
+/* Global inputs and buttons override for premium visibility and styling */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  background-color: var(--panel-raised) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  font-family: var(--font-body);
+  border-radius: var(--border-radius-small);
+  padding: 0.5rem 0.75rem;
+  outline: none;
+  transition: all 0.2s ease-in-out;
 }
 
-a {
-  color: var(--yellow);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--yellow) !important;
+  box-shadow: 0 0 0 2px var(--yellow-dim) !important;
 }
 
-a:hover {
-  opacity: 0.85;
+/* Custom placeholder styling */
+::placeholder {
+  color: var(--text-faint) !important;
+  opacity: 1;
 }
 
-::selection {
-  background: var(--yellow-dim);
-  color: var(--yellow);
+/* Neon glow button utilities */
+.btn-neon-yellow {
+  background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%) !important;
+  color: #111214 !important;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.4) !important;
+  border: none !important;
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer;
+}
+.btn-neon-yellow:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 22px rgba(251, 191, 36, 0.75) !important;
 }
 
-:focus-visible {
-  outline: 2px solid var(--yellow);
-  outline-offset: 2px;
+.btn-neon-green {
+  background: var(--green) !important;
+  color: #111214 !important;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.4) !important;
+  border: none !important;
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer;
+}
+.btn-neon-green:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 22px rgba(74, 222, 128, 0.75) !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.001ms !important;
-    transition-duration: 0.001ms !important;
-  }
+.btn-neon-red {
+  background: var(--red) !important;
+  color: #111214 !important;
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.4) !important;
+  border: none !important;
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer;
+}
+.btn-neon-red:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 22px rgba(248, 113, 113, 0.75) !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--panel);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--panel-raised);
 }

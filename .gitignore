@@ -30,3 +30,14 @@ out/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Databases
+*.db
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
