@@ -81,7 +81,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         raise credentials_exception
     return user
 
-async def require_role(role: str):
+def require_role(role: str):
     async def role_checker(current_user: User = Depends(get_current_user)):
         if current_user.role != role:
             raise HTTPException(
