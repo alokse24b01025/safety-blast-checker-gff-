@@ -29,10 +29,11 @@ def fallback_recommendation(risk_level: str, issues: list) -> str:
     return "\n".join(lines)
 
 from typing import Tuple
+from config import settings
 
 async def generate_recommendation(risk_level: str, total_score: int, issues: list) -> Tuple[str, bool]:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    model_name = os.environ.get("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest")
+    api_key = settings.ANTHROPIC_API_KEY
+    model_name = settings.ANTHROPIC_MODEL
 
     if not api_key:
         logger.info("ANTHROPIC_API_KEY not set; using fallback templated recommendation.")
