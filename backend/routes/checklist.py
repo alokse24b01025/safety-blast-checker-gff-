@@ -37,7 +37,7 @@ async def create_submission(payload: SubmissionCreate, db=Depends(get_mongo_db))
         assessment = evaluate_blast_site(data)
         
         # Generate Claude recommendation
-        ai_rec = await generate_recommendation(
+        ai_rec, ai_generated = await generate_recommendation(
             risk_level=assessment["risk_level"],
             total_score=assessment["total_score"],
             issues=assessment["issues"]
@@ -53,6 +53,7 @@ async def create_submission(payload: SubmissionCreate, db=Depends(get_mongo_db))
             "critical_triggered": assessment["critical_triggered"],
             "issues": assessment["issues"],
             "ai_recommendation": ai_rec,
+            "ai_generated": ai_generated,
             "payload": data,
             "officer_decision": None,
             "officer_name": None,

@@ -8,8 +8,8 @@ import { loginUser, logoutUser } from './api/client.ts';
 export default function App() {
   // Auth states
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('supervisor');
-  const [password, setPassword] = useState('supervisor123');
+  const [username, setUsername] = useState('officer');
+  const [password, setPassword] = useState('officer123');
   const [role, setRole] = useState('');
   const [fullName, setFullName] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -120,16 +120,8 @@ export default function App() {
 
           <div className="border-t border-mining-border pt-4 text-center">
             <span className="text-[10px] text-gray-500 block uppercase font-bold tracking-wider mb-2">Default Seeded Credentials</span>
-            <div className="flex justify-around text-[11px] text-gray-400">
-              <div>
-                <strong>Supervisor:</strong><br/>
-                <span className="font-mono text-mining-gold">supervisor</span> / <span className="font-mono">supervisor123</span>
-              </div>
-              <div className="border-l border-mining-border h-8" />
-              <div>
-                <strong>Blasting Officer:</strong><br/>
-                <span className="font-mono text-mining-gold">officer</span> / <span className="font-mono">officer123</span>
-              </div>
+            <div className="text-[11px] text-gray-400">
+              <strong>Blasting Officer:</strong> <span className="font-mono text-mining-gold">officer</span> / <span className="font-mono">officer123</span>
             </div>
           </div>
         </div>

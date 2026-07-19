@@ -36,19 +36,9 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 # Seed default accounts if they don't exist
 def seed_default_users(db: Session):
-    supervisor = db.query(User).filter(User.username == "supervisor").first()
-    if not supervisor:
-        supervisor = User(
-            username="supervisor",
-            password_hash=get_password_hash("supervisor123"),
-            role="SUPERVISOR",
-            full_name="Supervisor"
-        )
-        db.add(supervisor)
-    else:
-        if supervisor.full_name == "John Supervisor":
-            supervisor.full_name = "Supervisor"
-            db.commit()
+    # Remove supervisor account if it exists (enforce Blasting Officer only)
+    db.query(User).filter(User.username == "supervisor").delete()
+    db.commit()
 
     officer = db.query(User).filter(User.username == "officer").first()
     if not officer:
@@ -59,7 +49,7 @@ def seed_default_users(db: Session):
             full_name="Alok Blasting Officer"
         )
         db.add(officer)
-    db.commit()
+        db.commit()
 
 # Dependency to check user
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:

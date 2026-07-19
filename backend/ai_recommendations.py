@@ -28,13 +28,15 @@ def fallback_recommendation(risk_level: str, issues: list) -> str:
     lines.append(DISCLAIMER)
     return "\n".join(lines)
 
-async def generate_recommendation(risk_level: str, total_score: int, issues: list) -> str:
+from typing import Tuple
+
+async def generate_recommendation(risk_level: str, total_score: int, issues: list) -> Tuple[str, bool]:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     model_name = os.environ.get("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest")
 
     if not api_key:
         logger.info("ANTHROPIC_API_KEY not set; using fallback templated recommendation.")
-        return fallback_recommendation(risk_level, issues)
+        return fallback_recommendation(risk_level, issues), False
 
     issue_lines = "\n".join(
         f"- {'[CRITICAL] ' if i.get('critical') else ''}{i.get('description')} (weight: {i.get('weight')})"
@@ -70,7 +72,9 @@ rests with the authorised blasting officer."""
         
         # Anthropic python client returns a Message object
         text = "".join(block.text for block in response.content if block.type == "text").strip()
-        return text or fallback_recommendation(risk_level, issues)
+        if text:
+            return text, True
+        return fallback_recommendation(risk_level, issues), False
     except Exception as e:
         logger.warning(f"Anthropic API error, using fallback recommendation: {str(e)}")
-        return fallback_recommendation(risk_level, issues)
+        return fallback_recommendation(risk_level, issues), False

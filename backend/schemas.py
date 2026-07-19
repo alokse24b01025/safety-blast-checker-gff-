@@ -75,6 +75,7 @@ class SubmissionResponse(BaseModel):
     critical_triggered: bool
     issues: List[FlaggedIssue]
     ai_recommendation: Optional[str] = None
+    ai_generated: Optional[bool] = False
     officer_decision: Optional[str] = None
     officer_name: Optional[str] = None
     officer_comments: Optional[str] = None

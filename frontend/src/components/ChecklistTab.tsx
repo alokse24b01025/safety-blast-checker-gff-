@@ -636,8 +636,14 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
 
             {/* AI Advisory */}
             <div className="border-t border-mining-border pt-4">
-              <h4 className="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
-                AI Assistant Recommendation <span className="px-1.5 py-0.5 text-[8px] bg-yellow-950/50 text-yellow-500 rounded border border-yellow-800">ADVISORY ONLY</span>
+              <h4 className="text-xs font-bold text-white mb-2 flex flex-wrap items-center gap-1.5">
+                AI Assistant Recommendation 
+                <span className="px-1.5 py-0.5 text-[8px] bg-yellow-950/50 text-yellow-500 rounded border border-yellow-800">ADVISORY ONLY</span>
+                {result.ai_generated ? (
+                  <span className="px-1.5 py-0.5 text-[8px] bg-green-950/50 text-green-400 rounded border border-green-800">AI PREDICTED (CLAUDE 3.5)</span>
+                ) : (
+                  <span className="px-1.5 py-0.5 text-[8px] bg-blue-950/50 text-blue-400 rounded border border-blue-800">RULE ENGINE CONSTANTS (DEFAULT FALLBACK)</span>
+                )}
               </h4>
               <div className="bg-mining-dark/60 border border-mining-border p-3.5 rounded-xl text-xs text-gray-300 leading-relaxed font-sans italic whitespace-pre-line">
                 "{result.ai_recommendation}"
