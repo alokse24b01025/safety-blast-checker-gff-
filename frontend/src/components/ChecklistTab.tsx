@@ -640,7 +640,7 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
                 AI Assistant Recommendation 
                 <span className="px-1.5 py-0.5 text-[8px] bg-yellow-950/50 text-yellow-500 rounded border border-yellow-800">ADVISORY ONLY</span>
                 {result.ai_generated ? (
-                  <span className="px-1.5 py-0.5 text-[8px] bg-green-950/50 text-green-400 rounded border border-green-800">AI PREDICTED ({result.ai_provider || 'GEMINI 1.5'})</span>
+                  <span className="px-1.5 py-0.5 text-[8px] bg-green-950/50 text-green-400 rounded border border-green-800">AI PREDICTED ({result.ai_provider || 'GEMINI 3.1'})</span>
                 ) : (
                   <span className="px-1.5 py-0.5 text-[8px] bg-blue-950/50 text-blue-400 rounded border border-blue-800">RULE ENGINE CONSTANTS (DEFAULT FALLBACK)</span>
                 )}

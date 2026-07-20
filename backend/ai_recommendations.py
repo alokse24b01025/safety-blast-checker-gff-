@@ -2,7 +2,6 @@ import os
 import logging
 import httpx
 from typing import Tuple
-from anthropic import Anthropic
 from config import settings
 
 logger = logging.getLogger(__name__)
@@ -32,12 +31,12 @@ def fallback_recommendation(risk_level: str, issues: list) -> str:
     return "\n".join(lines)
 
 async def generate_recommendation(risk_level: str, total_score: int, issues: list) -> Tuple[str, bool, str]:
-    """Generates safety recommendation. Auto-detects Anthropic vs Gemini credentials."""
-    api_key = settings.ANTHROPIC_API_KEY
-    model_name = settings.ANTHROPIC_MODEL
+    """Generates safety recommendation using Google Gemini API."""
+    api_key = settings.GEMINI_API_KEY or settings.ANTHROPIC_API_KEY
+    model_name = settings.GEMINI_MODEL
 
     if not api_key:
-        logger.info("AI API Key not set; using fallback templated recommendation.")
+        logger.info("GEMINI_API_KEY not set; using fallback templated recommendation.")
         return fallback_recommendation(risk_level, issues), False, "NONE"
 
     issue_lines = "\n".join(
@@ -62,47 +61,27 @@ authorised blasting officer can do that. End with one sentence reminding
 the reader that this is an AI-generated recommendation and final approval
 rests with the authorised blasting officer."""
 
-    # 1. Check if key is Anthropic (starts with sk-ant-)
-    if api_key.strip().startswith("sk-ant-"):
-        logger.info("Calling Anthropic Claude API...")
-        try:
-            client = Anthropic(api_key=api_key)
-            response = client.messages.create(
-                model=model_name or "claude-3-5-sonnet-latest",
-                max_tokens=400,
-                messages=[{"role": "user", "content": prompt}]
-            )
-            text = "".join(block.text for block in response.content if block.type == "text").strip()
+    logger.info("Calling Google Gemini API...")
+    try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key.strip()}"
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt}
+                    ]
+                }
+            ]
+        }
+        async with httpx.AsyncClient(timeout=15.0) as httpx_client:
+            response = await httpx_client.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            data = response.json()
+            text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
             if text:
-                return text, True, "CLAUDE 3.5"
+                return text, True, "GEMINI 3.1"
             return fallback_recommendation(risk_level, issues), False, "NONE"
-        except Exception as e:
-            logger.warning(f"Anthropic API error, using fallback recommendation: {str(e)}")
-            return fallback_recommendation(risk_level, issues), False, "NONE"
-
-    # 2. Otherwise, treat it as a Google Gemini key (default)
-    else:
-        logger.info("Calling Google Gemini API...")
-        try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key={api_key.strip()}"
-            headers = {"Content-Type": "application/json"}
-            payload = {
-                "contents": [
-                    {
-                        "parts": [
-                            {"text": prompt}
-                        ]
-                    }
-                ]
-            }
-            async with httpx.AsyncClient(timeout=15.0) as httpx_client:
-                response = await httpx_client.post(url, headers=headers, json=payload)
-                response.raise_for_status()
-                data = response.json()
-                text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
-                if text:
-                    return text, True, "GEMINI 3.1"
-                return fallback_recommendation(risk_level, issues), False, "NONE"
-        except Exception as ge:
-            logger.warning(f"Gemini API error, using fallback recommendation: {str(ge)}")
-            return fallback_recommendation(risk_level, issues), False, "NONE"
+    except Exception as ge:
+        logger.warning(f"Gemini API error, using fallback recommendation: {str(ge)}")
+        return fallback_recommendation(risk_level, issues), False, "NONE"

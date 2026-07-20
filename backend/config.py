@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     PORT: int = Field(default=8000, env="PORT")
     MONGODB_URI: str = Field(default="mongodb://127.0.0.1:27017/blast_safety", env="MONGODB_URI")
     DATABASE_URL: str = Field(default="sqlite:///./blast_safety.db", env="DATABASE_URL")
+    GEMINI_API_KEY: str = Field(default="", env="GEMINI_API_KEY")
+    GEMINI_MODEL: str = Field(default="gemini-3.1-flash-lite", env="GEMINI_MODEL")
     ANTHROPIC_API_KEY: str = Field(default="", env="ANTHROPIC_API_KEY")
     ANTHROPIC_MODEL: str = Field(default="claude-3-5-sonnet-latest", env="ANTHROPIC_MODEL")
     JWT_SECRET: str = Field(default="supersecretkey", env="JWT_SECRET")
