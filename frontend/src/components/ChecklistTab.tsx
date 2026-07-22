@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, ShieldAlert as AlertIcon, AlertOctagon } from 'lucide-react';
+import { Shield, ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, ShieldAlert as AlertIcon, AlertOctagon, Loader2 } from 'lucide-react';
 import SignatureCanvas from './SignatureCanvas.tsx';
 import RiskBeacon from './RiskBeacon.tsx';
 import { submitChecklist, submitOfficerReview, pdfDownloadUrl } from '../api/client.ts';
@@ -583,7 +583,15 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
 
       {/* Results Column */}
       <div className="lg:col-span-5 flex flex-col gap-6">
-        {!result ? (
+        {submitting ? (
+          <div className="bg-mining-card border border-mining-accent p-6 rounded-2xl flex flex-col items-center justify-center text-center min-h-[300px] h-full shadow-lg shadow-mining-accent/5">
+            <Loader2 size={40} className="text-mining-gold animate-spin mb-4" />
+            <h3 className="text-white font-semibold text-sm tracking-wider uppercase">Evaluating Safety Criteria</h3>
+            <p className="text-xs text-gray-400 max-w-[250px] mt-2 leading-relaxed">
+              Running 17 deterministic risk calculations and generating Google Gemini AI advisory report...
+            </p>
+          </div>
+        ) : !result ? (
           <div className="bg-mining-card border border-mining-border p-6 rounded-2xl flex flex-col items-center justify-center text-center min-h-[300px] h-full">
             <ShieldAlert size={48} className="text-gray-600 mb-3" />
             <h3 className="text-white font-semibold text-sm">Awaiting Intake Submission</h3>
