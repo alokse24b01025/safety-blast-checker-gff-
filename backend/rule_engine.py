@@ -1,3 +1,23 @@
+"""
+Blast Site Risk Scoring Engine
+-------------------------------
+Implements a Weighted Checklist Risk Index, adapted from the standard
+ISO 31000 formulation:  Risk = Likelihood x Severity (Consequence)
+
+Since this is a real-time site checklist (not a probabilistic future event),
+Likelihood collapses to a binary Occurrence value:
+
+    Risk Score = sum( Severity(k) * Occurrence(k) )   for k = 1..n
+
+    Severity(k)   -> fixed weight of condition k (10-40), see WEIGHTS
+    Occurrence(k) -> 1 if condition k is observed on site, else 0
+
+Four conditions are modelled as a separate override layer, Critical(x):
+if any one of them is true, Risk Level = RED immediately and the score
+is not used to determine the level (matches how real risk matrices treat
+catastrophic-severity events -- they override rather than get averaged in).
+"""
+
 class RiskLevel:
     GREEN = 'GREEN'
     YELLOW = 'YELLOW'
@@ -8,6 +28,7 @@ GREEN_MAX = 15
 YELLOW_MAX = 40
 ORANGE_MAX = 70
 
+# --- Severity(k): fixed weight table for every weighted condition ---------
 WEIGHTS = {
     'BLAST_DESIGN_NOT_APPROVED': 40,
     'EXCLUSION_ZONE_NOT_ESTABLISHED': 30,
@@ -30,82 +51,80 @@ MIN_SAFE_TEMP_C = 0
 MAX_SAFE_TEMP_C = 45
 DEFAULT_MAX_SAFE_WORKER_COUNT = 50
 
-def evaluate_blast_site(submission: dict) -> dict:
-    issues = []
-    critical_triggered = False
+# --- Occurrence(k): each rule returns 1 (condition present) or 0 (absent) -
+# Boolean rules are simple field checks. Numeric rules compare against a
+# safe-limit constant. Every rule is (code, description, occurrence_fn).
+WEIGHTED_RULES = [
+    ('BLAST_DESIGN_NOT_APPROVED', 'Blast design has not been approved.',
+        lambda s: s.get('blast_design_approved') is False),
+    ('EXCLUSION_ZONE_NOT_ESTABLISHED', 'Exclusion zone has not been established.',
+        lambda s: s.get('exclusion_zone_established') is False),
+    ('SIREN_NOT_WORKING', 'Warning siren is not working.',
+        lambda s: s.get('siren_working') is False),
+    ('COMMUNICATION_NOT_WORKING', 'Communication equipment is not functioning.',
+        lambda s: s.get('communication_working') is False),
+    ('BARRICADES_NOT_IN_PLACE', 'Barricades are not in place.',
+        lambda s: s.get('barricades_in_place') is False),
+    ('SAFETY_BRIEFING_INCOMPLETE', 'Safety briefing has not been completed.',
+        lambda s: s.get('safety_briefing_completed') is False),
+    ('EMERGENCY_VEHICLE_UNAVAILABLE', 'Emergency vehicle is not available on site.',
+        lambda s: s.get('emergency_vehicle_available') is False),
+    ('ESCAPE_ROUTE_NOT_CLEAR', 'Escape route is not clear.',
+        lambda s: s.get('escape_route_clear') is False),
+    ('SUPERVISOR_UNAVAILABLE', 'Shift supervisor is not available.',
+        lambda s: s.get('supervisor_available') is False),
+    ('HIGH_WIND_SPEED', f'Wind speed exceeds safe limit of {MAX_SAFE_WIND_SPEED_KMH} km/h.',
+        lambda s: s.get('wind_speed_kmh') is not None and s['wind_speed_kmh'] > MAX_SAFE_WIND_SPEED_KMH),
+    ('HEAVY_RAINFALL', f'Rainfall exceeds safe limit of {MAX_SAFE_RAINFALL_MM} mm.',
+        lambda s: s.get('rainfall_mm') is not None and s['rainfall_mm'] > MAX_SAFE_RAINFALL_MM),
+    ('WORKER_COUNT_EXCEEDS_LIMIT', 'Worker count exceeds site safe limit.',
+        lambda s: s.get('worker_count') is not None and
+                  s['worker_count'] > (s.get('max_safe_worker_count') or DEFAULT_MAX_SAFE_WORKER_COUNT)),
+    ('EXTREME_TEMPERATURE', f'Temperature is outside the safe operating range ({MIN_SAFE_TEMP_C}-{MAX_SAFE_TEMP_C}C).',
+        lambda s: s.get('temperature_c') is not None and
+                  (s['temperature_c'] < MIN_SAFE_TEMP_C or s['temperature_c'] > MAX_SAFE_TEMP_C)),
+]
 
-    def flag(code, description, weight, critical=False):
-        nonlocal critical_triggered
-        issues.append({
-            'code': code,
-            'description': description,
-            'weight': weight,
-            'critical': critical
-        })
-        if critical:
+# --- Critical(x): conditions that override the score entirely -------------
+CRITICAL_RULES = [
+    ('LIGHTNING_WARNING', 'Lightning warning detected in the area.',
+        lambda s: s.get('lightning_warning') is True),
+    ('WORKERS_IN_EXCLUSION_ZONE', 'Workers reported inside the exclusion zone.',
+        lambda s: s.get('workers_in_exclusion_zone') is True),
+    ('OFFICER_UNAVAILABLE', 'No authorised blasting officer available to approve the blast.',
+        lambda s: s.get('blasting_officer_available') is False),
+    ('DETONATORS_NOT_SECURE', 'Detonators reported as not secure / faulty.',
+        lambda s: s.get('detonators_secure') is False),
+]
+
+
+def evaluate_blast_site(submission: dict) -> dict:
+    """
+    Runs Critical(x) first, then computes
+    Risk Score = sum( Severity(k) * Occurrence(k) ) over WEIGHTED_RULES.
+    """
+    issues = []
+
+    # --- Critical(x) override layer ---------------------------------
+    # Occurrence(k) in {0, 1} per critical rule; if any Occurrence(k) = 1,
+    # Critical(x) = 1 and the weighted score is not used for the level.
+    critical_triggered = False
+    for code, desc, occurrence_fn in CRITICAL_RULES:
+        if occurrence_fn(submission):
+            issues.append({'code': code, 'description': desc, 'weight': 40, 'critical': True})
             critical_triggered = True
 
-    # --- CRITICAL RULES -----------------------------------------------
-    if submission.get('lightning_warning') is True:
-        flag('LIGHTNING_WARNING', 'Lightning warning detected in the area.', 40, True)
+    # --- Risk Score = sum( Severity(k) * Occurrence(k) ) -------------
+    total_score = 0
+    for code, desc, occurrence_fn in WEIGHTED_RULES:
+        occurrence = 1 if occurrence_fn(submission) else 0   # Occurrence(k)
+        severity = WEIGHTS[code]                             # Severity(k)
+        contribution = severity * occurrence                 # Severity(k) x Occurrence(k)
+        if contribution > 0:
+            issues.append({'code': code, 'description': desc, 'weight': contribution, 'critical': False})
+        total_score += contribution                          # running sum (Sigma)
 
-    if submission.get('workers_in_exclusion_zone') is True:
-        flag('WORKERS_IN_EXCLUSION_ZONE', 'Workers reported inside the exclusion zone.', 40, True)
-
-    if submission.get('blasting_officer_available') is False:
-        flag('OFFICER_UNAVAILABLE', 'No authorised blasting officer available to approve the blast.', 40, True)
-
-    if submission.get('detonators_secure') is False:
-        flag('DETONATORS_NOT_SECURE', 'Detonators reported as not secure / faulty.', 40, True)
-
-    # --- WEIGHTED RULES --------------------------------------------------
-    if submission.get('blast_design_approved') is False:
-        flag('BLAST_DESIGN_NOT_APPROVED', 'Blast design has not been approved.', WEIGHTS['BLAST_DESIGN_NOT_APPROVED'])
-
-    if submission.get('exclusion_zone_established') is False:
-        flag('EXCLUSION_ZONE_NOT_ESTABLISHED', 'Exclusion zone has not been established.', WEIGHTS['EXCLUSION_ZONE_NOT_ESTABLISHED'])
-
-    if submission.get('siren_working') is False:
-        flag('SIREN_NOT_WORKING', 'Warning siren is not working.', WEIGHTS['SIREN_NOT_WORKING'])
-
-    if submission.get('communication_working') is False:
-        flag('COMMUNICATION_NOT_WORKING', 'Communication equipment is not functioning.', WEIGHTS['COMMUNICATION_NOT_WORKING'])
-
-    if submission.get('barricades_in_place') is False:
-        flag('BARRICADES_NOT_IN_PLACE', 'Barricades are not in place.', WEIGHTS['BARRICADES_NOT_IN_PLACE'])
-
-    if submission.get('safety_briefing_completed') is False:
-        flag('SAFETY_BRIEFING_INCOMPLETE', 'Safety briefing has not been completed.', WEIGHTS['SAFETY_BRIEFING_INCOMPLETE'])
-
-    if submission.get('emergency_vehicle_available') is False:
-        flag('EMERGENCY_VEHICLE_UNAVAILABLE', 'Emergency vehicle is not available on site.', WEIGHTS['EMERGENCY_VEHICLE_UNAVAILABLE'])
-
-    if submission.get('escape_route_clear') is False:
-        flag('ESCAPE_ROUTE_NOT_CLEAR', 'Escape route is not clear.', WEIGHTS['ESCAPE_ROUTE_NOT_CLEAR'])
-
-    if submission.get('supervisor_available') is False:
-        flag('SUPERVISOR_UNAVAILABLE', 'Shift supervisor is not available.', WEIGHTS['SUPERVISOR_UNAVAILABLE'])
-
-    wind_speed = submission.get('wind_speed_kmh')
-    if wind_speed is not None and wind_speed > MAX_SAFE_WIND_SPEED_KMH:
-        flag('HIGH_WIND_SPEED', f'Wind speed {wind_speed} km/h exceeds safe limit of {MAX_SAFE_WIND_SPEED_KMH} km/h.', WEIGHTS['HIGH_WIND_SPEED'])
-
-    rainfall = submission.get('rainfall_mm')
-    if rainfall is not None and rainfall > MAX_SAFE_RAINFALL_MM:
-        flag('HEAVY_RAINFALL', f'Rainfall {rainfall} mm exceeds safe limit of {MAX_SAFE_RAINFALL_MM} mm.', WEIGHTS['HEAVY_RAINFALL'])
-
-    worker_count = submission.get('worker_count')
-    max_safe_workers = submission.get('max_safe_worker_count') or DEFAULT_MAX_SAFE_WORKER_COUNT
-    if worker_count is not None and worker_count > max_safe_workers:
-        flag('WORKER_COUNT_EXCEEDS_LIMIT', f'Worker count {worker_count} exceeds site safe limit of {max_safe_workers}.', WEIGHTS['WORKER_COUNT_EXCEEDS_LIMIT'])
-
-    temperature = submission.get('temperature_c')
-    if temperature is not None and (temperature < MIN_SAFE_TEMP_C or temperature > MAX_SAFE_TEMP_C):
-        flag('EXTREME_TEMPERATURE', f'Temperature {temperature}°C is outside the safe operating range ({MIN_SAFE_TEMP_C}–{MAX_SAFE_TEMP_C}°C).', WEIGHTS['EXTREME_TEMPERATURE'])
-
-    # --- AGGREGATE ---------------------------------------------------
-    total_score = sum(issue['weight'] for issue in issues)
-    
+    # --- Risk level classification ------------------------------------
     if critical_triggered:
         risk_level = RiskLevel.RED
     elif total_score <= GREEN_MAX:
