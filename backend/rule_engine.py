@@ -46,6 +46,7 @@ WEIGHTS = {
 }
 
 MAX_SAFE_WIND_SPEED_KMH = 30
+CRITICAL_WIND_SPEED_KMH = 40  # Extreme storm wind threshold (forces RED)
 MAX_SAFE_RAINFALL_MM = 10
 MIN_SAFE_TEMP_C = 0
 MAX_SAFE_TEMP_C = 45
@@ -73,7 +74,7 @@ WEIGHTED_RULES = [
         lambda s: s.get('escape_route_clear') is False),
     ('SUPERVISOR_UNAVAILABLE', 'Shift supervisor is not available.',
         lambda s: s.get('supervisor_available') is False),
-    ('HIGH_WIND_SPEED', f'Wind speed exceeds safe limit of {MAX_SAFE_WIND_SPEED_KMH} km/h.',
+    ('HIGH_WIND_SPEED', f'Wind speed exceeds safe warning limit of {MAX_SAFE_WIND_SPEED_KMH} km/h.',
         lambda s: s.get('wind_speed_kmh') is not None and s['wind_speed_kmh'] > MAX_SAFE_WIND_SPEED_KMH),
     ('HEAVY_RAINFALL', f'Rainfall exceeds safe limit of {MAX_SAFE_RAINFALL_MM} mm.',
         lambda s: s.get('rainfall_mm') is not None and s['rainfall_mm'] > MAX_SAFE_RAINFALL_MM),
@@ -95,6 +96,8 @@ CRITICAL_RULES = [
         lambda s: s.get('blasting_officer_available') is False),
     ('DETONATORS_NOT_SECURE', 'Detonators reported as not secure / faulty.',
         lambda s: s.get('detonators_secure') is False),
+    ('CRITICAL_WIND_SPEED', f'Wind speed exceeds critical operation limit of {CRITICAL_WIND_SPEED_KMH} km/h.',
+        lambda s: s.get('wind_speed_kmh') is not None and s['wind_speed_kmh'] > CRITICAL_WIND_SPEED_KMH),
 ]
 
 

@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="Mining Intelligence Platform - Alok's Modules",
+    title="Mining Intelligence Platform",
     description="Python FastAPI REST API for Blast Safety Checklists & Blast Design Optimisation.",
     version="1.0.0"
 )
