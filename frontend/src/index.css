@@ -133,3 +133,82 @@ textarea:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--panel);
 }
+
+/* ============================================================
+   MOTION SYSTEM — Command Core animations
+   All animations respect prefers-reduced-motion (see bottom).
+   ============================================================ */
+
+@keyframes core-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes core-ring-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes core-ring-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes stream-flow {
+  0% { stroke-dashoffset: 40; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes particle-drift {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.3; }
+  100% { transform: translate(var(--drift-x, 20px), -120px); opacity: 0; }
+}
+
+@keyframes scan-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes grid-drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+.reveal-on-mount {
+  animation: reveal-up 0.5s ease-out both;
+}
+
+.command-bg-grid {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 42px 42px;
+  animation: grid-drift 6s linear infinite;
+}
+
+/* Respect reduced motion: freeze everything to a static, safe state */
+@media (prefers-reduced-motion: reduce) {
+  .core-pulse,
+  .core-ring,
+  .core-ring-reverse,
+  .stream-line,
+  .particle,
+  .scan-sweep,
+  .command-bg-grid {
+    animation: none !important;
+  }
+  .reveal-on-mount {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

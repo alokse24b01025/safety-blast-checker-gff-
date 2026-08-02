@@ -136,3 +136,11 @@ export async function fetchIncidentsByBlast(blastId: string) {
   });
   return handleResponse(res);
 }
+
+// --- Executive Dashboard API ---
+export async function fetchDashboardSummary() {
+  const res = await fetch(`${API_BASE}/api/dashboard/summary`, {
+    headers: getHeaders(),
+  });
+  return handleResponse(res);
+}

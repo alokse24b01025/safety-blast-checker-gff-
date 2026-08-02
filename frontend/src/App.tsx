@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, ShieldCheck, Flame, ClipboardList, ShieldAlert, LogOut, Lock, Key } from 'lucide-react';
+import { Shield, ShieldCheck, Flame, ClipboardList, ShieldAlert, LogOut, Lock, Key, LayoutDashboard } from 'lucide-react';
 import ChecklistTab from './components/ChecklistTab.tsx';
 import BlastDesignTab from './components/BlastDesignTab.tsx';
 import IncidentLogsTab from './components/IncidentLogsTab.tsx';
+import ExecutiveDashboard from './components/ExecutiveDashboard.tsx';
 import { loginUser, logoutUser } from './api/client.ts';
 
 export default function App() {
@@ -16,7 +17,7 @@ export default function App() {
   const [loggingIn, setLoggingIn] = useState(false);
 
   // Tab State
-  const [activeTab, setActiveTab] = useState<'checklist' | 'design' | 'incidents'>('checklist');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'checklist' | 'design' | 'incidents'>('dashboard');
 
   // Key state change notifier for lists
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -51,7 +52,7 @@ export default function App() {
     setIsLoggedIn(false);
     setRole('');
     setFullName('');
-    setActiveTab('checklist');
+    setActiveTab('dashboard');
   };
 
   const triggerDataRefresh = () => {
@@ -166,6 +167,18 @@ export default function App() {
       <nav className="border-b border-mining-border bg-mining-dark/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex gap-2 overflow-x-auto">
           <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
+              activeTab === 'dashboard'
+                ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
+                : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
+            }`}
+          >
+            <LayoutDashboard size={13} />
+            <span className="hidden sm:inline">Executive Dashboard</span>
+            <span className="sm:hidden">Dashboard</span>
+          </button>
+          <button
             onClick={() => setActiveTab('checklist')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
               activeTab === 'checklist'
@@ -206,6 +219,9 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className={activeTab === 'dashboard' ? '' : 'hidden'}>
+          <ExecutiveDashboard key={refreshTrigger} />
+        </div>
         <div className={activeTab === 'checklist' ? '' : 'hidden'}>
           <ChecklistTab onSubmissionSuccess={triggerDataRefresh} userRole={role} />
         </div>

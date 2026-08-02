@@ -630,8 +630,8 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
                         }`}
                       >
                         <span className={`font-mono font-bold px-1.5 py-0.5 rounded ${issue.critical ? 'bg-red-900/50 text-red-200' : 'bg-gray-800'}`}>
-                          {issue.weight}
-                        </span>
+                          {issue.weight
+                        }</span>
                         <div>
                           {issue.critical && <strong className="text-red-400">CRITICAL: </strong>}
                           {issue.description}

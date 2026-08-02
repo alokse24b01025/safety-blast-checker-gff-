@@ -6,7 +6,7 @@ import logging
 from config import settings
 from database_sql import engine, Base
 from database_mongo import connect_to_mongo, close_mongo_connection
-from routes import auth, checklist, blast_design, incidents
+from routes import auth, checklist, blast_design, incidents, dashboard
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -51,6 +51,7 @@ app.include_router(auth.router)
 app.include_router(checklist.router)
 app.include_router(blast_design.router)
 app.include_router(incidents.router)
+app.include_router(dashboard.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)
