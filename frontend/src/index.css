@@ -5,47 +5,101 @@
 @tailwind utilities;
 
 :root {
-  /* Theme Colors - Control Room Industrial */
-  --bg: #14110f;              /* near-black charcoal page background */
-  --panel: #1b1815;           /* card / panel background */
-  --panel-raised: #26221d;    /* raised inputs, inner fields background */
-  --border: rgba(255, 255, 255, 0.08); /* hairline border overlay */
-  --text: #e8e1d8;            /* warm off-white for headers & key details */
-  --text-muted: #a39a8c;      /* muted warm gray for descriptions & labels */
-  --text-faint: #6b6459;      /* faint warm gray for placeholders */
+  /* Theme Colors - Cybernetic Mine Control Room */
+  --bg: #070605;              /* deep-black subterranean pit */
+  --panel: rgba(14, 12, 11, 0.93); /* Dark, high-contrast panel */
+  --panel-raised: rgba(22, 19, 17, 0.95); /* Darker raised transparent panel */
+  --border: rgba(255, 90, 31, 0.22); /* Darker, stronger orange border */
+  --text: #f3ede4;            /* warm bright cream */
+  --text-muted: #b5ac9d;      /* warm dust gray */
+  --text-faint: #736b5d;      /* dark ash */
 
-  /* ACCENT STATUS COLORS - flat, signal-based */
-  --green: #3fa66b;           /* cleared / safe */
-  --yellow: #ffb020;          /* caution / pending */
-  --orange: #ff5a1f;          /* primary accent - blast orange */
-  --red: #e13b3b;             /* violation / critical */
+  /* ACCENT STATUS COLORS - neon glows */
+  --green: #00ff66;           /* glowing neon green (SAFE) */
+  --yellow: #ffcc00;          /* glowing neon yellow (CAUTION) */
+  --orange: #ff5a1f;          /* energetic mine warning orange */
+  --red: #ff3333;             /* glowing neon red alert (CRITICAL) */
 
-  --green-dim: rgba(63, 166, 107, 0.1);
-  --yellow-dim: rgba(255, 176, 32, 0.1);
-  --orange-dim: rgba(255, 90, 31, 0.1);
-  --red-dim: rgba(225, 59, 59, 0.1);
+  --green-dim: rgba(0, 255, 102, 0.06);
+  --yellow-dim: rgba(255, 204, 0, 0.06);
+  --orange-dim: rgba(255, 90, 31, 0.06);
+  --red-dim: rgba(255, 51, 51, 0.06);
 
   /* TYPOGRAPHY */
   --font-display: 'Archivo Expanded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
 
-  /* CORNER RADIUS - flat, instrument-panel, not rounded/premium */
-  --border-radius-large: 12px;
-  --border-radius-medium: 8px;
-  --border-radius-small: 6px;
+  /* CORNER RADIUS - glassmorphism curved */
+  --border-radius-large: 16px;
+  --border-radius-medium: 12px;
+  --border-radius-small: 8px;
 }
 
-html, body {
+html {
   background-color: var(--bg);
+}
+
+body {
+  background-color: transparent !important;
   color: var(--text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Global inputs and buttons override for premium visibility and styling */
+/* Subterranean shifting thermal currents backdrop */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -3;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(255, 90, 31, 0.035) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0, 255, 102, 0.025) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.015) 0%, transparent 60%);
+  background-size: 200% 200%;
+  animation: thermal-currents 35s ease infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes thermal-currents {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 40% 20%; }
+  100% { background-position: 80% 80%; }
+}
+
+/* Futuristic Glassmorphism Panels with Heavy Hover Transitions */
+.bg-mining-card {
+  background: var(--panel) !important;
+  backdrop-filter: blur(16px) saturate(115%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(115%) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.bg-mining-card:hover {
+  transform: translateY(-3px) scale(1.005);
+  border-color: rgba(255, 90, 31, 0.22) !important;
+  box-shadow: 0 12px 40px 0 rgba(255, 90, 31, 0.06), 0 8px 32px 0 rgba(0, 0, 0, 0.65) !important;
+}
+
+/* Header blur */
+header {
+  background: rgba(22, 19, 17, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(110%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(110%) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* Global inputs and buttons override for glassmorphic focus and styling */
 input[type="text"],
 input[type="password"],
 input[type="number"],
@@ -53,14 +107,15 @@ input[type="date"],
 input[type="time"],
 select,
 textarea {
-  background-color: var(--panel-raised) !important;
-  border: 1px solid var(--border) !important;
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: var(--text) !important;
   font-family: var(--font-body);
   border-radius: var(--border-radius-small);
   padding: 0.5rem 0.75rem;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 input[type="text"]:focus,
@@ -70,7 +125,8 @@ input[type="time"]:focus,
 select:focus,
 textarea:focus {
   border-color: var(--orange) !important;
-  box-shadow: 0 0 0 2px var(--orange-dim) !important;
+  box-shadow: 0 0 14px rgba(255, 90, 31, 0.28) !important;
+  background-color: rgba(0, 0, 0, 0.55) !important;
 }
 
 /* Custom placeholder styling */
@@ -79,41 +135,50 @@ textarea:focus {
   opacity: 1;
 }
 
-/* Flat status buttons - no glow, solid fills, industrial */
+/* Neon buttons override */
 .btn-neon-yellow {
-  background: var(--orange) !important;
-  color: #3a1000 !important;
-  border: none !important;
-  transition: filter 0.15s ease, transform 0.1s ease !important;
+  background: linear-gradient(135deg, #ff8c00, #ff5a1f) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(255, 90, 31, 0.3);
+  transition: all 0.3s ease !important;
   cursor: pointer;
 }
 .btn-neon-yellow:hover:not(:disabled) {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 90, 31, 0.5);
+  transform: translateY(-2px);
+  filter: brightness(1.15);
 }
 
 .btn-neon-green {
-  background: var(--green) !important;
-  color: #0a2415 !important;
-  border: none !important;
-  transition: filter 0.15s ease, transform 0.1s ease !important;
+  background: linear-gradient(135deg, #00e658, #00aa44) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(0, 255, 102, 0.25);
+  transition: all 0.3s ease !important;
   cursor: pointer;
 }
 .btn-neon-green:hover:not(:disabled) {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 255, 102, 0.45);
+  transform: translateY(-2px);
+  filter: brightness(1.15);
 }
 
 .btn-neon-red {
-  background: var(--red) !important;
-  color: #fcebeb !important;
-  border: none !important;
-  transition: filter 0.15s ease, transform 0.1s ease !important;
+  background: linear-gradient(135deg, #ff3b30, #cc1100) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3);
+  transition: all 0.3s ease !important;
   cursor: pointer;
 }
 .btn-neon-red:hover:not(:disabled) {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 51, 51, 0.5);
+  transform: translateY(-2px);
+  filter: brightness(1.15);
 }
 
 ::-webkit-scrollbar {
@@ -174,8 +239,16 @@ textarea:focus {
 }
 
 @keyframes reveal-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes grid-drift {
@@ -184,7 +257,7 @@ textarea:focus {
 }
 
 .reveal-on-mount {
-  animation: reveal-up 0.5s ease-out both;
+  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .command-bg-grid {
@@ -211,4 +284,122 @@ textarea:focus {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+@keyframes spin-subtle {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Subterranean 3D Planetary Orbit Animation */
+@keyframes custom-orbit {
+  0% {
+    transform: translate3d(-50%, -50%, 0) translate(340px, -30px) scale(0.75);
+    z-index: 2;
+    filter: blur(1.5px);
+    opacity: 0.75;
+  }
+  16.6% {
+    transform: translate3d(-50%, -50%, 0) translate(220px, 60px) scale(0.9);
+    z-index: 5;
+    filter: blur(0.5px);
+    opacity: 0.9;
+  }
+  33.3% {
+    /* Front center - slowest angular velocity and closest to viewer */
+    transform: translate3d(-50%, -50%, 0) translate(0px, 130px) scale(1.05);
+    z-index: 15;
+    filter: blur(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(-50%, -50%, 0) translate(-220px, 60px) scale(0.9);
+    z-index: 5;
+    filter: blur(0.5px);
+    opacity: 0.9;
+  }
+  66.6% {
+    transform: translate3d(-50%, -50%, 0) translate(-340px, -30px) scale(0.75);
+    z-index: 2;
+    filter: blur(1.5px);
+    opacity: 0.75;
+  }
+  83.3% {
+    /* Back center - fastest angular velocity and furthest from viewer */
+    transform: translate3d(-50%, -50%, 0) translate(0px, -130px) scale(0.6);
+    z-index: 0;
+    filter: blur(2.5px);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) translate(340px, -30px) scale(0.75);
+    z-index: 2;
+    filter: blur(1.5px);
+    opacity: 0.75;
+  }
+}
+
+/* Horizontal Bobbing wave keyframe animations */
+@keyframes wave-bob-1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes wave-bob-2 {
+  0%, 100% { transform: translateY(0) scale(1.05); }
+  50% { transform: translateY(-9px) scale(1.05); }
+}
+
+@keyframes wave-bob-3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes wave-bob-4 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@media (min-width: 768px) {
+  .bobbing-card-1 {
+    animation: wave-bob-1 6s ease-in-out infinite;
+    animation-delay: 0s;
+  }
+  .bobbing-card-2 {
+    animation: wave-bob-2 6s ease-in-out infinite;
+    animation-delay: -1.5s;
+    transform: scale(1.05);
+  }
+  .bobbing-card-3 {
+    animation: wave-bob-3 6s ease-in-out infinite;
+    animation-delay: -3s;
+  }
+  .bobbing-card-4 {
+    animation: wave-bob-4 6s ease-in-out infinite;
+    animation-delay: -4.5s;
+  }
+
+  /* Hover transitions to zoom and stop bobbing */
+  .bobbing-card-1:hover,
+  .bobbing-card-3:hover,
+  .bobbing-card-4:hover {
+    animation-play-state: paused !important;
+    transform: translateY(-12px) scale(1.06) !important;
+    z-index: 20 !important;
+  }
+
+  .bobbing-card-2:hover {
+    animation-play-state: paused !important;
+    transform: translateY(-15px) scale(1.11) !important;
+    z-index: 20 !important;
+  }
+}
+
+/* Pulsing warning border animation for critical safety outcomes */
+@keyframes pulse-border-red {
+  0%, 100% { border-color: rgba(255, 51, 51, 0.9); box-shadow: 0 0 16px rgba(255, 51, 51, 0.2); }
+  50% { border-color: rgba(255, 51, 51, 0.4); box-shadow: 0 0 6px rgba(255, 51, 51, 0.05); }
+}
+.animate-pulse-border {
+  animation: pulse-border-red 2s infinite ease-in-out;
 }

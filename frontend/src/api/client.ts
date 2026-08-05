@@ -1,8 +1,10 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
-function getHeaders(): HeadersInit {
+function getHeaders(): Record<string, string> {
   const token = localStorage.getItem('access_token');
-  const headers: HeadersInit = { 'Content-Type': 'application/json' };
+  const headers: Record<string, string> = { 
+    'Content-Type': 'application/json' 
+  };
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -18,7 +20,7 @@ async function handleResponse(res: Response) {
         detail = typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail);
       }
     } catch (_) {
-      // ignore
+      // ignore JSON parse failures for non-JSON error pages
     }
     throw new Error(detail);
   }

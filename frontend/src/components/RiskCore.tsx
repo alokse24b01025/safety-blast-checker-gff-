@@ -5,6 +5,7 @@ interface RiskCoreProps {
   level: string | null | undefined;
   score?: number | null;
   submissionsToday?: number;
+  onFormulaClick?: () => void;
 }
 
 /**
@@ -15,7 +16,7 @@ interface RiskCoreProps {
  * core's color is the semantic risk color (see lib/riskTheme.ts) so it
  * always matches the same meaning used everywhere else in the app.
  */
-export default function RiskCore({ level, score, submissionsToday = 0 }: RiskCoreProps) {
+export default function RiskCore({ level, score, submissionsToday = 0, onFormulaClick }: RiskCoreProps) {
   const theme = riskTheme(level);
 
   // Fixed random-looking but deterministic particle positions (no Math.random
@@ -198,13 +199,36 @@ export default function RiskCore({ level, score, submissionsToday = 0 }: RiskCor
         <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.35rem', maxWidth: 380 }}>
           {theme.meaning}
         </div>
-        <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem' }}>
+        <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', alignItems: 'center' }}>
           <div>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.2rem', color: 'var(--text)' }}>{submissionsToday}</div>
             <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.68rem', color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Checked Today
             </div>
           </div>
+          {onFormulaClick && (
+            <button
+              onClick={onFormulaClick}
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '0.7rem',
+                color: 'var(--text-muted)',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                padding: '4px 10px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+              className="hover:border-mining-gold hover:text-white transition-all"
+            >
+              <span>ℹ️</span>
+              <span>How is this calculated?</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

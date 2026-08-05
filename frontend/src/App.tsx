@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, ShieldCheck, Flame, ClipboardList, ShieldAlert, LogOut, Lock, Key, LayoutDashboard } from 'lucide-react';
-import ChecklistTab from './components/ChecklistTab.tsx';
-import BlastDesignTab from './components/BlastDesignTab.tsx';
-import IncidentLogsTab from './components/IncidentLogsTab.tsx';
-import ExecutiveDashboard from './components/ExecutiveDashboard.tsx';
-import { loginUser, logoutUser } from './api/client.ts';
+import { Shield, ShieldCheck, Flame, ClipboardList, ShieldAlert, LogOut, Lock, Key, LayoutDashboard, ArrowLeft } from 'lucide-react';
+import VideoBackground from './components/VideoBackground';
+// ✅ CORRECT: Removed .tsx and .ts extensions
+import ChecklistTab from './components/ChecklistTab';
+import BlastDesignTab from './components/BlastDesignTab';
+import IncidentLogsTab from './components/IncidentLogsTab';
+import ExecutiveDashboard from './components/ExecutiveDashboard';
+import CentralHub from './components/CentralHub';
+import { loginUser, logoutUser } from './api/client';
 
 export default function App() {
   // Auth states
@@ -17,7 +20,7 @@ export default function App() {
   const [loggingIn, setLoggingIn] = useState(false);
 
   // Tab State
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'checklist' | 'design' | 'incidents'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'hub' | 'dashboard' | 'checklist' | 'design' | 'incidents'>('hub');
 
   // Key state change notifier for lists
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -52,7 +55,7 @@ export default function App() {
     setIsLoggedIn(false);
     setRole('');
     setFullName('');
-    setActiveTab('dashboard');
+    setActiveTab('hub');
   };
 
   const triggerDataRefresh = () => {
@@ -62,7 +65,8 @@ export default function App() {
   // Render Login Modal if not logged in
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-mining-dark flex items-center justify-center p-4">
+      <div className="min-h-screen bg-transparent flex items-center justify-center p-4">
+        <VideoBackground />
         <div className="w-full max-w-md bg-mining-card border border-mining-border p-8 rounded-3xl shadow-2xl flex flex-col gap-6">
           <div className="text-center flex flex-col items-center">
             <div className="h-12 w-12 bg-mining-accent/10 border border-mining-accent rounded-2xl flex items-center justify-center text-mining-accent mb-4">
@@ -131,7 +135,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-mining-dark flex flex-col font-sans">
+    <div className="min-h-screen bg-transparent flex flex-col font-sans">
+      <VideoBackground />
       {/* Header */}
       <header className="bg-mining-card/80 backdrop-blur-md border-b border-mining-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4.5 flex justify-between items-center">
@@ -145,8 +150,16 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            {activeTab !== 'hub' && (
+              <button
+                onClick={() => setActiveTab('hub')}
+                className="px-2.5 py-1.5 bg-mining-dark hover:bg-mining-accent/15 border border-mining-border rounded-xl text-xs font-bold text-mining-gold flex items-center gap-1.5 transition-all"
+              >
+                <ArrowLeft size={13} />
+                <span className="hidden sm:inline">Return to Hub</span>
+              </button>
+            )}
 
-            {/* User Session Info */}
             <div className="hidden md:flex flex-col text-right">
               <span className="text-xs text-mining-gold font-bold font-mono uppercase tracking-widest">{role} Session</span>
             </div>
@@ -163,62 +176,13 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Tab Navigation */}
-      <nav className="border-b border-mining-border bg-mining-dark/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex gap-2 overflow-x-auto">
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-              activeTab === 'dashboard'
-                ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
-                : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
-            }`}
-          >
-            <LayoutDashboard size={13} />
-            <span className="hidden sm:inline">Executive Dashboard</span>
-            <span className="sm:hidden">Dashboard</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('checklist')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-              activeTab === 'checklist'
-                ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
-                : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
-            }`}
-          >
-            <ClipboardList size={13} />
-            <span className="hidden sm:inline">Blast Safety Checklist</span>
-            <span className="sm:hidden">Checklist</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('design')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-              activeTab === 'design'
-                ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
-                : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
-            }`}
-          >
-            <Flame size={13} />
-            <span className="hidden sm:inline">Blast Design Optimisation</span>
-            <span className="sm:hidden">Design Opt</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('incidents')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-              activeTab === 'incidents'
-                ? 'bg-mining-accent/15 border-mining-accent text-mining-gold shadow-sm shadow-mining-accent/10'
-                : 'bg-mining-card border-mining-border text-gray-400 hover:text-white'
-            }`}
-          >
-            <ShieldAlert size={13} />
-            <span className="hidden sm:inline">Incident Registers &amp; Audits</span>
-            <span className="sm:hidden">Incidents</span>
-          </button>
-        </div>
-      </nav>
+
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'hub' && (
+          <CentralHub setActiveTab={setActiveTab} role={role} />
+        )}
         <div className={activeTab === 'dashboard' ? '' : 'hidden'}>
           <ExecutiveDashboard key={refreshTrigger} />
         </div>

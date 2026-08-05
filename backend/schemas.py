@@ -55,6 +55,10 @@ class ChecklistPayload(BaseModel):
     barricades_in_place: bool
     blast_design_approved: bool
     escape_route_clear: bool
+    
+    humidity_pct: Optional[float] = Field(default=None, ge=0, le=100)
+    visibility_km: Optional[float] = Field(default=None, ge=0, le=500)
+    pressure_hpa: Optional[float] = Field(default=None, ge=300, le=1500)
 
 class FlaggedIssue(BaseModel):
     code: str
