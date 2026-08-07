@@ -15,7 +15,17 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
-*.env
+backend/.env
+frontend/.env
+
+# Python Virtual Environments & Bytecode
+.venv/
+venv/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # Local History / IDEs
 .history/
@@ -31,13 +41,6 @@ out/
 .DS_Store
 Thumbs.db
 
-# Databases
+# Databases & logs
 *.db
-
-# Python bytecode
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-
+*.log

@@ -1,4 +1,3 @@
-import React from 'react';
 import { LayoutDashboard, ClipboardList, Flame, BookOpen } from 'lucide-react';
 
 interface CentralHubProps {
@@ -6,7 +5,7 @@ interface CentralHubProps {
   role: string;
 }
 
-export default function CentralHub({ setActiveTab, role }: CentralHubProps) {
+export default function CentralHub({ setActiveTab, role: _role }: CentralHubProps) {
   return (
     <div className="relative min-h-[82vh] flex flex-col justify-center items-center py-6 px-4 select-none overflow-hidden">
       
@@ -42,20 +41,17 @@ export default function CentralHub({ setActiveTab, role }: CentralHubProps) {
         .bubble-anim-left {
           opacity: 0;
           animation: 
-            fly-in-from-bottom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s forwards, 
-            drift-left 9s ease-in-out 2.3s infinite;
+            fly-in-from-bottom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s forwards;
         }
         .bubble-anim-center {
           opacity: 0;
           animation: 
-            fly-in-from-bottom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.8s forwards, 
-            drift-center 8s ease-in-out 2.6s infinite;
+            fly-in-from-bottom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.8s forwards;
         }
         .bubble-anim-right {
           opacity: 0;
           animation: 
-            fly-in-from-bottom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.1s forwards, 
-            drift-right 10s ease-in-out 2.9s infinite;
+            fly-in-from-bottom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.1s forwards;
         }
       `}</style>
 

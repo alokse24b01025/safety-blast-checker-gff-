@@ -5,7 +5,6 @@ import {
   BarChart, Bar, Cell, AreaChart, Area
 } from 'recharts';
 import { fetchDashboardSummary, fetchHistory, fetchIncidents, fetchBlastPlans } from '../api/client';
-import { riskTheme } from '../lib/riskTheme';
 import { useCountUp } from '../lib/useCountUp';
 
 interface DashboardSummary {

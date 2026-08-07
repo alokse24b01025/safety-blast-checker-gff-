@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layers, Zap, Info, ShieldAlert, Award, RefreshCw, Navigation, Map, Shield } from 'lucide-react';
+import { Layers, Zap, Info, ShieldAlert, RefreshCw, Navigation, Map } from 'lucide-react';
 import BlastVisualizer from './BlastVisualizer.tsx';
 import FragmentationCurve from './FragmentationCurve.tsx';
 import { submitBlastPlan, optimizeBlastParams } from '../api/client.ts';
@@ -58,12 +58,10 @@ export default function BlastDesignTab() {
   const [result, setResult] = useState<any>(null);
 
   // AI suggestion state
-  const [optSuggestions, setOptSuggestions] = useState<any>(null);
   const [loadingOpt, setLoadingOpt] = useState(false);
 
   // User's actual GPS location state
   const [gpsCoords, setGpsCoords] = useState<{ lat: number; lon: number }>({ lat: 23.7957, lon: 86.4304 }); // default to Dhanbad coalfields
-  const [gpsLoaded, setGpsLoaded] = useState(false);
 
   // GIS blast center point relative coordinates
   const [blastCoords, setBlastCoords] = useState<{ x: number; y: number }>({ x: 250, y: 160 });
@@ -78,15 +76,8 @@ export default function BlastDesignTab() {
             lat: position.coords.latitude,
             lon: position.coords.longitude
           });
-          setGpsLoaded(true);
-        },
-        () => {
-          // If permission denied, use Dhanbad standard
-          setGpsLoaded(true);
         }
       );
-    } else {
-      setGpsLoaded(true);
     }
   }, []);
 
@@ -94,7 +85,6 @@ export default function BlastDesignTab() {
   const holeDiameterMm = Number(form.hole_diameter) || 115;
   const benchHeightM = Number(form.bench_height) || 10;
   const subdrillM = Number(form.subdrill) || 1.2;
-  const stemmingM = Number(form.stemming_height) || 3.0;
 
   // 1. Hole Depth: Bench Height + Subdrill
   const calculatedHoleDepth = parseFloat((benchHeightM + subdrillM).toFixed(2));
@@ -167,7 +157,6 @@ export default function BlastDesignTab() {
         bench_height: Number(form.bench_height),
         hole_diameter: Number(form.hole_diameter)
       });
-      setOptSuggestions(res);
       if (res) {
         setForm(prev => ({
           ...prev,

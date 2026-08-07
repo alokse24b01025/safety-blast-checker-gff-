@@ -1,4 +1,3 @@
-import pytest
 from rule_engine import evaluate_blast_site, RiskLevel
 
 def test_critical_lightning_forces_red():

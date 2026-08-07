@@ -1,7 +1,6 @@
 import math
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from datetime import datetime
 from typing import List
 
 from database_sql import get_db
@@ -25,14 +24,10 @@ def calculate_simulation_and_opt(plan_data: dict) -> dict:
     burden = plan_data["burden"]
     spacing = plan_data["spacing"]
     dia_mm = plan_data["hole_diameter"]
-    subdrill = plan_data["subdrill"]
-    stemming = plan_data["stemming_height"]
     qty = plan_data["explosive_qty"]
     exp_type = plan_data["explosive_type"]
     
     # Standard physics calculations
-    hole_depth = bench_h + subdrill
-    charge_len = max(0.1, hole_depth - stemming)
     dia_m = dia_mm / 1000.0
     
     # Volume and mass broken per hole

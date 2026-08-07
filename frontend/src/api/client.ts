@@ -27,20 +27,91 @@ async function handleResponse(res: Response) {
   return res.json();
 }
 
-export async function loginUser(credentials: any) {
-  const res = await fetch(`${API_BASE}/api/auth/login`, {
+export async function registerUser(payload: any) {
+  const res = await fetch(`${API_BASE}/api/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+}
+
+export async function verifyRegistration(payload: any) {
+  const res = await fetch(`${API_BASE}/api/auth/verify-registration`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
   });
   const data = await handleResponse(res);
   localStorage.setItem('access_token', data.access_token);
-  localStorage.setItem('user_role', data.role);
-  localStorage.setItem('user_fullname', data.full_name);
+  localStorage.setItem('user_role', data.user.role);
+  localStorage.setItem('user_fullname', data.user.full_name);
   return data;
 }
 
-export function logoutUser() {
+export async function requestLoginOTP(payload: any) {
+  const res = await fetch(`${API_BASE}/api/auth/login-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+}
+
+export async function verifyLogin(payload: any) {
+  const res = await fetch(`${API_BASE}/api/auth/verify-login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await handleResponse(res);
+  localStorage.setItem('access_token', data.access_token);
+  localStorage.setItem('user_role', data.user.role);
+  localStorage.setItem('user_fullname', data.user.full_name);
+  return data;
+}
+
+export async function requestForgotPasswordOTP(payload: any) {
+  const res = await fetch(`${API_BASE}/api/auth/forgot-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+}
+
+export async function resetPassword(payload: any) {
+  const res = await fetch(`${API_BASE}/api/auth/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+}
+
+export async function loginWithPassword(email: string, password: string) {
+  const res = await fetch(`${API_BASE}/api/auth/login-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await handleResponse(res);
+  localStorage.setItem('access_token', data.access_token);
+  localStorage.setItem('user_role', data.user.role);
+  localStorage.setItem('user_fullname', data.user.full_name);
+  return data;
+}
+
+export async function logoutUser() {
+  try {
+    await fetch(`${API_BASE}/api/auth/logout`, {
+      method: 'POST',
+      headers: getHeaders(),
+    });
+  } catch (e) {
+    console.error(e);
+  }
   localStorage.removeItem('access_token');
   localStorage.removeItem('user_role');
   localStorage.removeItem('user_fullname');

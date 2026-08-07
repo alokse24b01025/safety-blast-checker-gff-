@@ -3,31 +3,49 @@ from typing import List, Optional
 from datetime import datetime
 
 # --- Authentication Schemas ---
-class UserLogin(BaseModel):
-    username: str
+class UserRegisterRequest(BaseModel):
+    email: str
     password: str
-
-class UserCreate(BaseModel):
-    username: str
-    password: str
-    role: str  # "OFFICER" or "SUPERVISOR"
     full_name: str
+    company: str
+    designation: str
+    phone: str
+    country: str
 
-class UserResponse(BaseModel):
-    id: int
-    username: str
+class LoginOTPRequest(BaseModel):
+    method: str  # "email" or "phone"
+    identifier: str  # the email or phone number
+
+class LoginPasswordRequest(BaseModel):
+    email: str
+    password: str
+
+class VerifyOTPRequest(BaseModel):
+    identifier: str
+    otp: str
+
+class ForgotPasswordRequest(BaseModel):
+    method: str  # "email" or "phone"
+    identifier: str
+
+class ResetPasswordRequest(BaseModel):
+    identifier: str
+    otp: str
+    new_password: str
+
+class UserProfileResponse(BaseModel):
+    email: str
+    phone: str
+    full_name: str
+    company: str
+    designation: str
+    country: str
     role: str
-    full_name: str
 
-    class Config:
-        from_attributes = True
-
-class Token(BaseModel):
+class TokenResponse(BaseModel):
     access_token: str
     token_type: str
-    username: str
-    role: str
-    full_name: str
+    user: UserProfileResponse
 
 # --- Checklist Schemas ---
 class ChecklistPayload(BaseModel):

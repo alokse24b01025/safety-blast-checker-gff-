@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
 from database_sql import get_db
 from models_sql import IncidentLog
 from schemas import IncidentLogCreate, IncidentLogResponse
-from routes.auth import get_current_user, User
+from routes.auth import get_current_user
 
 router = APIRouter(prefix="/api/incidents", tags=["Incident Logs"])
 
@@ -13,14 +13,14 @@ router = APIRouter(prefix="/api/incidents", tags=["Incident Logs"])
 def log_incident(
     incident_in: IncidentLogCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user)
 ):
     db_incident = IncidentLog(
         blast_id=incident_in.blast_id,
         incident_type=incident_in.incident_type,
         description=incident_in.description,
         severity=incident_in.severity,
-        logged_by=current_user.full_name
+        logged_by=current_user.get("full_name", "Unknown Operator")
     )
     db.add(db_incident)
     db.commit()

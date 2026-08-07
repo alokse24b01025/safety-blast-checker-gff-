@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, ShieldAlert as AlertIcon, AlertOctagon, Loader2 } from 'lucide-react';
+import { ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, AlertOctagon, Loader2 } from 'lucide-react';
 import SignatureCanvas from './SignatureCanvas.tsx';
 import RiskBeacon from './RiskBeacon.tsx';
 import { submitChecklist, submitOfficerReview, pdfDownloadUrl } from '../api/client.ts';
-import { fetchDashboardSummary } from '../api/client';
 const getTodayDateString = () => {
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -279,9 +278,7 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
     const t = Number(form.temperature_c);
     const w = Number(form.wind_speed_kmh);
     const r = Number(form.rainfall_mm);
-    const h = Number(form.humidity_pct);
     const v = Number(form.visibility_km);
-    const p = Number(form.pressure_hpa);
 
     if (w > 30) {
       alerts.push('High wind speed detected (exceeds 30 km/h). Delay blasting operations to prevent flyrock drift.');
@@ -389,15 +386,6 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
     }
   };
 
-  const getBeaconStyle = (level: string) => {
-    switch (level) {
-      case 'GREEN': return { bg: 'bg-green-950/40', text: 'text-green-400', border: 'border-green-800' };
-      case 'YELLOW': return { bg: 'bg-yellow-950/40', text: 'text-yellow-400', border: 'border-yellow-800' };
-      case 'ORANGE': return { bg: 'bg-orange-950/40', text: 'text-orange-400', border: 'border-orange-800' };
-      case 'RED': return { bg: 'bg-red-950/40', text: 'text-red-400', border: 'border-red-800' };
-      default: return { bg: 'bg-gray-950/40', text: 'text-gray-400', border: 'border-gray-800' };
-    }
-  };
 
   // Helper to generate premium, high-contrast toggle styles
   const getToggleButtonClass = (isActive: boolean, isAlertColor: boolean) => {
@@ -1073,7 +1061,6 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
                 <div className="max-h-[350px] overflow-y-auto pr-1 flex flex-col gap-2">
                   {getFactorDetails(result).map((factor) => {
                     const isSafe = factor.status === 'Safe';
-                    const isMod = factor.status === 'Moderate Risk';
                     const isHigh = factor.status === 'High Risk';
                     const isCrit = factor.status === 'Critical';
                     const pts = getFactorWeight(factor.label, result);
