@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Flame, ClipboardList, ShieldAlert, LogOut, Lock, 
   LayoutDashboard, ArrowLeft, Mail, X, ChevronRight, Info, AlertTriangle, 
-  BookOpen, Send 
+  BookOpen, Send, Menu 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import VideoBackground from './components/VideoBackground';
@@ -29,6 +29,7 @@ export default function App() {
   // Modal control states
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authTab, setAuthTab] = useState<'login' | 'register' | 'forgot'>('login');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Multi-factor login type
   const [loginMode, setLoginMode] = useState<'otp' | 'password'>('password');
@@ -380,8 +381,80 @@ export default function App() {
                 </button>
               </>
             )}
+
+            {/* Mobile Hamburger Navigation Toggle Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-1.5 sm:p-2 text-gray-300 hover:text-white bg-mining-dark border border-mining-border rounded-xl transition-all"
+              aria-label="Toggle Navigation Menu"
+            >
+              {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Navigation Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="lg:hidden bg-mining-card/95 border-b border-mining-border backdrop-blur-lg overflow-hidden px-4 py-3 flex flex-col gap-1"
+            >
+              <button 
+                onClick={() => { scrollToSection('home'); setIsMobileMenuOpen(false); }} 
+                className="text-left text-xs font-bold text-gray-300 hover:text-white py-2 px-3 hover:bg-mining-dark rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+              >
+                <span>Home</span>
+                <ChevronRight size={12} className="text-gray-500" />
+              </button>
+              <button 
+                onClick={() => { scrollToSection('about'); setIsMobileMenuOpen(false); }} 
+                className="text-left text-xs font-bold text-gray-300 hover:text-white py-2 px-3 hover:bg-mining-dark rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+              >
+                <span>About</span>
+                <ChevronRight size={12} className="text-gray-500" />
+              </button>
+              <button 
+                onClick={() => { scrollToSection('features'); setIsMobileMenuOpen(false); }} 
+                className="text-left text-xs font-bold text-gray-300 hover:text-white py-2 px-3 hover:bg-mining-dark rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+              >
+                <span>Features</span>
+                <ChevronRight size={12} className="text-gray-500" />
+              </button>
+              <button 
+                onClick={() => { scrollToSection('risk-scoring'); setIsMobileMenuOpen(false); }} 
+                className="text-left text-xs font-bold text-gray-300 hover:text-white py-2 px-3 hover:bg-mining-dark rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+              >
+                <span>AI Risk</span>
+                <ChevronRight size={12} className="text-gray-500" />
+              </button>
+              <button 
+                onClick={() => { scrollToSection('articles'); setIsMobileMenuOpen(false); }} 
+                className="text-left text-xs font-bold text-gray-300 hover:text-white py-2 px-3 hover:bg-mining-dark rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+              >
+                <span>Mining Articles</span>
+                <ChevronRight size={12} className="text-gray-500" />
+              </button>
+              <button 
+                onClick={() => { scrollToSection('hazards'); setIsMobileMenuOpen(false); }} 
+                className="text-left text-xs font-bold text-gray-300 hover:text-white py-2 px-3 hover:bg-mining-dark rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+              >
+                <span>Hazards</span>
+                <ChevronRight size={12} className="text-gray-500" />
+              </button>
+              <button 
+                onClick={() => { scrollToSection('contact'); setIsMobileMenuOpen(false); }} 
+                className="text-left text-xs font-bold text-gray-300 hover:text-white py-2 px-3 hover:bg-mining-dark rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+              >
+                <span>Contact</span>
+                <ChevronRight size={12} className="text-gray-500" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* PORTAL VIEWS VS STUNNING LANDING PAGE SECTIONS */}
