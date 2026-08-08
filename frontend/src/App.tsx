@@ -324,15 +324,28 @@ export default function App() {
       {/* HEADER NAVBAR */}
       <header className="bg-mining-card/85 backdrop-blur-md border-b border-mining-border sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4.5 flex justify-between items-center">
-          <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
-            <span className="text-mining-accent text-base sm:text-xl font-black">▲</span>
-            <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white leading-tight tracking-wider uppercase">
-              Mining Intelligence Platform
-            </h1>
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            {/* Mobile Hamburger Navigation Toggle Button (Left End) */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="xl:hidden flex items-center gap-1.5 px-2.5 py-1.5 bg-mining-dark hover:bg-mining-accent/20 border border-mining-accent/40 rounded-xl text-white font-bold text-xs transition-all shadow-[0_0_10px_rgba(255,90,31,0.2)]"
+              aria-label="Toggle Navigation Menu"
+            >
+              {isMobileMenuOpen ? <X size={18} className="text-mining-accent" /> : <Menu size={18} className="text-mining-accent" />}
+              <span className="text-[11px] uppercase tracking-wider font-extrabold text-mining-gold">{isMobileMenuOpen ? 'Close' : 'Menu'}</span>
+            </button>
+
+            {/* Brand Logo & Title */}
+            <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
+              <span className="text-mining-accent text-base sm:text-xl font-black">▲</span>
+              <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white leading-tight tracking-wider uppercase">
+                Mining Intelligence Platform
+              </h1>
+            </div>
           </div>
 
           {/* NAVBAR LINKS */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden xl:flex items-center gap-6">
             <button onClick={() => scrollToSection('home')} className="text-xs font-bold text-gray-300 hover:text-white uppercase tracking-wider transition-colors">Home</button>
             <button onClick={() => scrollToSection('about')} className="text-xs font-bold text-gray-300 hover:text-white uppercase tracking-wider transition-colors">About</button>
             <button onClick={() => scrollToSection('features')} className="text-xs font-bold text-gray-300 hover:text-white uppercase tracking-wider transition-colors">Features</button>
@@ -342,7 +355,7 @@ export default function App() {
             <button onClick={() => scrollToSection('contact')} className="text-xs font-bold text-gray-300 hover:text-white uppercase tracking-wider transition-colors">Contact</button>
           </nav>
 
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             {/* Highlighted Use Our Services button */}
             {!user && (
               <button
@@ -381,15 +394,6 @@ export default function App() {
                 </button>
               </>
             )}
-
-            {/* Mobile Hamburger Navigation Toggle Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 text-gray-300 hover:text-white bg-mining-dark border border-mining-border rounded-xl transition-all"
-              aria-label="Toggle Navigation Menu"
-            >
-              {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
           </div>
         </div>
 
@@ -401,7 +405,7 @@ export default function App() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="lg:hidden bg-mining-card/95 border-b border-mining-border backdrop-blur-lg overflow-hidden px-4 py-3 flex flex-col gap-1"
+              className="xl:hidden bg-mining-card/95 border-b border-mining-border backdrop-blur-lg overflow-hidden px-4 py-3 flex flex-col gap-1"
             >
               <button 
                 onClick={() => { scrollToSection('home'); setIsMobileMenuOpen(false); }} 
