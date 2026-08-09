@@ -32,17 +32,17 @@ interface GISAsset {
 }
 
 const gisAssets: GISAsset[] = [
-  { id: 'v1', name: 'Nirsa Village Outpost', type: 'VILLAGE', x: 80, y: 70, label: 'Nirsa' },
-  { id: 'v2', name: 'Staff Quarters B', type: 'VILLAGE', x: 420, y: 90, label: 'Staff Qtrs' },
-  { id: 'e1', name: 'CAT 6020B Shovel #03', type: 'EQUIPMENT', x: 340, y: 130, label: 'Shovel' },
-  { id: 'e2', name: 'Sandvik Drill Rig', type: 'EQUIPMENT', x: 280, y: 165, label: 'Drill Rig' },
-  { id: 'w1', name: 'Charging Crew A', type: 'WORKER', x: 220, y: 155, label: 'Crew A' },
-  { id: 'w2', name: 'Pit Supervisor', type: 'WORKER', x: 130, y: 220, label: 'Supervisor' },
-  { id: 't1', name: 'Belaz Dump Truck #18', type: 'VEHICLE', x: 190, y: 260, label: 'Truck #18' },
-  { id: 't2', name: 'CAT Water Tanker #02', type: 'VEHICLE', x: 380, y: 260, label: 'Tanker' },
+  { id: 'v1', name: 'Site Access Boundary Gate', type: 'VILLAGE', x: 80, y: 70, label: 'Access Gate' },
+  { id: 'v2', name: 'Field Operations Station', type: 'VILLAGE', x: 420, y: 90, label: 'Ops Station' },
+  { id: 'e1', name: 'Primary Heavy Excavator', type: 'EQUIPMENT', x: 340, y: 130, label: 'Excavator' },
+  { id: 'e2', name: 'Drilling Machinery Unit', type: 'EQUIPMENT', x: 280, y: 165, label: 'Drill Unit' },
+  { id: 'w1', name: 'Field Inspection Crew', type: 'WORKER', x: 220, y: 155, label: 'Crew A' },
+  { id: 'w2', name: 'Safety Officer Station', type: 'WORKER', x: 130, y: 220, label: 'Safety Officer' },
+  { id: 't1', name: 'Haul Transport Vehicle', type: 'VEHICLE', x: 190, y: 260, label: 'Haul Truck' },
+  { id: 't2', name: 'Water Tanker Unit', type: 'VEHICLE', x: 380, y: 260, label: 'Water Tanker' },
 ];
 
-// Distance helper from a point to a line segment (used for Pipeline overlap check)
+// Distance helper from a point to a line segment (used for Boundary overlap check)
 const getDistanceToSegment = (px: number, py: number, x1: number, y1: number, x2: number, y2: number) => {
   const l2 = (x2 - x1) ** 2 + (y2 - y1) ** 2;
   if (l2 === 0) return Math.sqrt((px - x1) ** 2 + (py - y1) ** 2);
@@ -481,7 +481,7 @@ export default function BlastDesignTab() {
                   transform="rotate(31, 150, 120)"
                   fontWeight="bold"
                 >
-                  ⚡ Primary Utility Pipeline
+                  ⚡ Perimeter Power & Utility Line
                 </text>
 
                 {/* Mine Pit Edge boundary lines */}
