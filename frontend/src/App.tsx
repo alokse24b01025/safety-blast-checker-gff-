@@ -325,10 +325,10 @@ export default function App() {
       <header className="bg-mining-card/85 backdrop-blur-md border-b border-mining-border sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4.5 flex justify-between items-center">
           <div className="flex items-center gap-2.5 sm:gap-3">
-            {/* Mobile Hamburger Navigation Toggle Button (Left End) */}
+            {/* Mobile Hamburger Navigation Toggle Button (Left End - Visible on Mobile & Tablet) */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="xl:hidden flex items-center gap-1.5 px-2.5 py-1.5 bg-mining-dark hover:bg-mining-accent/20 border border-mining-accent/40 rounded-xl text-white font-bold text-xs transition-all shadow-[0_0_10px_rgba(255,90,31,0.2)]"
+              className="lg:hidden flex items-center gap-1.5 px-2.5 py-1.5 bg-mining-dark hover:bg-mining-accent/20 border border-mining-accent/40 rounded-xl text-white font-bold text-xs transition-all shadow-[0_0_10px_rgba(255,90,31,0.2)]"
               aria-label="Toggle Navigation Menu"
             >
               {isMobileMenuOpen ? <X size={18} className="text-mining-accent" /> : <Menu size={18} className="text-mining-accent" />}
@@ -344,8 +344,8 @@ export default function App() {
             </div>
           </div>
 
-          {/* NAVBAR LINKS */}
-          <nav className="hidden xl:flex items-center gap-6">
+          {/* NAVBAR LINKS (Visible directly on Laptop & Desktop) */}
+          <nav className="hidden lg:flex items-center gap-3.5 xl:gap-6">
             <button onClick={() => scrollToSection('home')} className="text-xs font-bold text-gray-300 hover:text-white uppercase tracking-wider transition-colors">Home</button>
             <button onClick={() => scrollToSection('about')} className="text-xs font-bold text-gray-300 hover:text-white uppercase tracking-wider transition-colors">About</button>
             <button onClick={() => scrollToSection('features')} className="text-xs font-bold text-gray-300 hover:text-white uppercase tracking-wider transition-colors">Features</button>
@@ -397,7 +397,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Left-Aligned Sliding Navigation Sidebar Drawer */}
+        {/* Left-Aligned Sliding Navigation Sidebar Drawer (Mobile Only) */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <>
@@ -407,7 +407,7 @@ export default function App() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 xl:hidden"
+                className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 lg:hidden"
               />
 
               {/* Left Side Bounded Drawer Panel */}
@@ -416,7 +416,7 @@ export default function App() {
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 250 }}
-                className="fixed top-0 left-0 bottom-0 w-72 max-w-[85vw] bg-mining-card/95 border-r border-mining-border backdrop-blur-xl z-50 shadow-2xl flex flex-col p-5 xl:hidden"
+                className="fixed top-0 left-0 bottom-0 w-72 max-w-[85vw] bg-mining-card/95 border-r border-mining-border backdrop-blur-xl z-50 shadow-2xl flex flex-col p-5 lg:hidden"
               >
                 {/* Drawer Top Header */}
                 <div className="flex justify-between items-center pb-4 border-b border-mining-border mb-4">
