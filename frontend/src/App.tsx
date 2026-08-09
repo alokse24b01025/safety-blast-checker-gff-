@@ -295,10 +295,15 @@ export default function App() {
   };
 
   const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    if (user && activeTab !== 'hub') {
+      setActiveTab('hub');
     }
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
   };
 
   // Safe navigation proxy clicker for the hub cards
@@ -397,64 +402,64 @@ export default function App() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Navigation Menu */}
+        {/* Mobile Dropdown Navigation Menu (Compact Half-Width) */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0, scale: 0.95, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
-              className="lg:hidden bg-mining-card/98 border-t border-b border-mining-accent/40 backdrop-blur-2xl overflow-hidden px-4 py-3 flex flex-col gap-1 shadow-2xl relative z-50"
+              className="lg:hidden absolute top-full left-4 w-60 bg-mining-card/98 border border-mining-accent/40 backdrop-blur-2xl overflow-hidden p-2 flex flex-col gap-1 shadow-2xl rounded-2xl z-50 mt-1"
             >
               <button 
                 onClick={() => { scrollToSection('home'); setIsMobileMenuOpen(false); }} 
-                className="text-left text-xs font-black py-2.5 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+                className="text-left text-xs font-black py-2 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
               >
                 <span className="text-mining-gold font-mono font-bold">HOME</span>
-                <ChevronRight size={14} className="text-mining-accent" />
+                <ChevronRight size={13} className="text-mining-accent" />
               </button>
               <button 
                 onClick={() => { scrollToSection('about'); setIsMobileMenuOpen(false); }} 
-                className="text-left text-xs font-black py-2.5 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+                className="text-left text-xs font-black py-2 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
               >
                 <span className="text-mining-gold font-mono font-bold">ABOUT</span>
-                <ChevronRight size={14} className="text-mining-accent" />
+                <ChevronRight size={13} className="text-mining-accent" />
               </button>
               <button 
                 onClick={() => { scrollToSection('features'); setIsMobileMenuOpen(false); }} 
-                className="text-left text-xs font-black py-2.5 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+                className="text-left text-xs font-black py-2 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
               >
                 <span className="text-mining-gold font-mono font-bold">FEATURES</span>
-                <ChevronRight size={14} className="text-mining-accent" />
+                <ChevronRight size={13} className="text-mining-accent" />
               </button>
               <button 
                 onClick={() => { scrollToSection('risk-scoring'); setIsMobileMenuOpen(false); }} 
-                className="text-left text-xs font-black py-2.5 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+                className="text-left text-xs font-black py-2 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
               >
                 <span className="text-mining-gold font-mono font-bold">AI RISK</span>
-                <ChevronRight size={14} className="text-mining-accent" />
+                <ChevronRight size={13} className="text-mining-accent" />
               </button>
               <button 
                 onClick={() => { scrollToSection('articles'); setIsMobileMenuOpen(false); }} 
-                className="text-left text-xs font-black py-2.5 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+                className="text-left text-xs font-black py-2 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
               >
                 <span className="text-mining-gold font-mono font-bold">MINING ARTICLES</span>
-                <ChevronRight size={14} className="text-mining-accent" />
+                <ChevronRight size={13} className="text-mining-accent" />
               </button>
               <button 
                 onClick={() => { scrollToSection('hazards'); setIsMobileMenuOpen(false); }} 
-                className="text-left text-xs font-black py-2.5 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+                className="text-left text-xs font-black py-2 px-3 hover:bg-mining-accent/20 border-b border-gray-800/80 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
               >
                 <span className="text-mining-gold font-mono font-bold">HAZARDS</span>
-                <ChevronRight size={14} className="text-mining-accent" />
+                <ChevronRight size={13} className="text-mining-accent" />
               </button>
               <button 
                 onClick={() => { scrollToSection('contact'); setIsMobileMenuOpen(false); }} 
-                className="text-left text-xs font-black py-2.5 px-3 hover:bg-mining-accent/20 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
+                className="text-left text-xs font-black py-2 px-3 hover:bg-mining-accent/20 rounded-lg transition-colors uppercase tracking-wider flex items-center justify-between"
               >
                 <span className="text-mining-gold font-mono font-bold">CONTACT</span>
-                <ChevronRight size={14} className="text-mining-accent" />
+                <ChevronRight size={13} className="text-mining-accent" />
               </button>
             </motion.div>
           )}
@@ -741,7 +746,7 @@ export default function App() {
                     </p>
                   </div>
                   <div className="px-6 pb-6 pt-4 border-t border-mining-border/50 text-[10px] font-mono text-gray-400 flex justify-between items-center">
-                    <span>By Dr. Alok Prasad</span>
+                    <span>By Mining Safety Board</span>
                     <span>Read Full ➔</span>
                   </div>
                 </article>
