@@ -323,11 +323,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent flex flex-col font-sans select-none overflow-x-hidden">
+    <div className="min-h-screen bg-transparent flex flex-col font-sans select-none overflow-x-hidden pt-16 sm:pt-20">
       <VideoBackground />
 
-      {/* HEADER NAVBAR */}
-      <header className="bg-mining-card/85 backdrop-blur-md border-b border-mining-border sticky top-0 z-40">
+      {/* HEADER NAVBAR (Fixed Top) */}
+      <header className="bg-[#121111] border-b border-mining-border fixed top-0 left-0 right-0 z-50 w-full shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4.5 flex justify-between items-center">
           <div className="flex items-center gap-2.5 sm:gap-3">
             {/* Mobile Hamburger Navigation Toggle Button (Left End - Visible on Mobile & Tablet) */}
@@ -342,7 +342,6 @@ export default function App() {
 
             {/* Brand Logo & Title */}
             <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
-              <span className="text-mining-accent text-base sm:text-xl font-black">▲</span>
               <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white leading-tight tracking-wider uppercase">
                 Mining Intelligence Platform
               </h1>
@@ -402,7 +401,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Navigation Menu (Compact Half-Width) */}
+        {/* Mobile Dropdown Navigation Menu (Compact Half-Width, Solid Opaque Dark Theme) */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -410,7 +409,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
-              className="lg:hidden absolute top-full left-4 w-60 bg-mining-card/98 border border-mining-accent/40 backdrop-blur-2xl overflow-hidden p-2 flex flex-col gap-1 shadow-2xl rounded-2xl z-50 mt-1"
+              className="lg:hidden absolute top-full left-4 w-60 bg-[#161515] border border-mining-accent/50 overflow-hidden p-2.5 flex flex-col gap-1 shadow-[0_10px_30px_rgba(0,0,0,0.95)] rounded-2xl z-50 mt-2"
             >
               <button 
                 onClick={() => { scrollToSection('home'); setIsMobileMenuOpen(false); }} 
