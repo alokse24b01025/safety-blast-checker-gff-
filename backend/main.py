@@ -6,7 +6,7 @@ import logging
 from config import settings
 from database_sql import engine, Base
 from database_mongo import connect_to_mongo, close_mongo_connection
-from routes import auth, checklist, blast_design, incidents, dashboard
+from routes import auth, checklist, blast_design, incidents, dashboard, vision_routes
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
