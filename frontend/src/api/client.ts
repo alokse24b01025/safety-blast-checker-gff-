@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://safety-blast-checker-gff-ai.onrender.com';
 
 function getHeaders(): Record<string, string> {
   const token = localStorage.getItem('access_token');
