@@ -149,8 +149,17 @@ export async function submitOfficerReview(id: string, review: any) {
   return handleResponse(res);
 }
 
-export function pdfDownloadUrl(id: string): string {
-  return `${API_BASE}/api/submissions/${id}/pdf`;
+export function pdfDownloadUrl(submissionId: string): string {
+  return `${API_BASE}/api/submissions/${submissionId}/pdf`;
+}
+
+export async function scanSiteVision(imageBase64: string) {
+  const res = await fetch(`${API_BASE}/api/submissions/scan-site`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify({ image_base64: imageBase64 }),
+  });
+  return handleResponse(res);
 }
 
 // --- Module 2: Blast Design Optimisation APIs ---

@@ -47,6 +47,21 @@ class TokenResponse(BaseModel):
     token_type: str
     user: UserProfileResponse
 
+class VisionScanRequest(BaseModel):
+    image_base64: str
+
+class VisionScanResponse(BaseModel):
+    workers_detected: int
+    workers_in_exclusion_zone: bool
+    detonators_secure: bool
+    siren_working: bool
+    barricades_in_place: bool
+    emergency_vehicle_available: bool
+    lightning_warning: bool
+    confidence_score: float
+    detected_objects: List[str]
+    notes: str
+
 # --- Checklist Schemas ---
 class ChecklistPayload(BaseModel):
     site_name: str = Field(..., min_length=2)
