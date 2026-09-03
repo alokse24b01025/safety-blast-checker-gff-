@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, AlertOctagon, Loader2, Camera, ThumbsUp, ThumbsDown, Award } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, AlertOctagon, Loader2 } from 'lucide-react';
 import SignatureCanvas from './SignatureCanvas.tsx';
 import RiskBeacon from './RiskBeacon.tsx';
-import { submitChecklist, submitOfficerReview, pdfDownloadUrl, scanSiteVision, sendVisionRLFeedback } from '../api/client.ts';
+import { submitChecklist, submitOfficerReview, pdfDownloadUrl } from '../api/client.ts';
 const getTodayDateString = () => {
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -227,11 +227,6 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
 
   // GPS Weather telemetry states
   const [fetchingWeather, setFetchingWeather] = useState(false);
-  const [gpsStatus, setGpsStatus] = useState<string | null>(null);
-  const [coordinates, setCoordinates] = useState<{ lat: number; lon: number } | null>(null);
-  const [showLargeMap, setShowLargeMap] = useState(false);
-
-  // Form States
   const [gpsStatus, setGpsStatus] = useState<string | null>(null);
   const [coordinates, setCoordinates] = useState<{ lat: number; lon: number } | null>(null);
   const [showLargeMap, setShowLargeMap] = useState(false);
