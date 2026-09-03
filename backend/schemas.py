@@ -60,7 +60,19 @@ class VisionScanResponse(BaseModel):
     lightning_warning: bool
     confidence_score: float
     detected_objects: List[str]
+    bounding_boxes: Optional[List[dict]] = []
     notes: str
+    model_used: Optional[str] = "GEMINI_MULTIMODAL_VISION"
+    ai_engine: Optional[str] = "GEMINI_VISION_API"
+
+class VisionRLFeedbackRequest(BaseModel):
+    submission_id: Optional[str] = None
+    reward_score: float = Field(..., ge=-1.0, le=1.0)  # +1.0 for reward, -1.0 for penalty
+    ai_predicted_workers: int
+    human_corrected_workers: int
+    ai_predicted_zone_intrusion: bool
+    human_corrected_zone_intrusion: bool
+    officer_feedback_notes: Optional[str] = None
 
 # --- Checklist Schemas ---
 class ChecklistPayload(BaseModel):

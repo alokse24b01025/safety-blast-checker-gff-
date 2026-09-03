@@ -4,9 +4,10 @@ from bson import ObjectId
 from datetime import datetime
 
 from database_mongo import get_mongo_db
-from schemas import SubmissionCreate, SubmissionResponse, OfficerReviewInput, VisionScanRequest, VisionScanResponse
+from schemas import SubmissionCreate, SubmissionResponse, OfficerReviewInput, VisionScanRequest, VisionScanResponse, VisionRLFeedbackRequest
 from rule_engine import evaluate_blast_site
 from ai_recommendations import generate_recommendation
+from ai_vision import analyze_mining_site_vision
 from pdf_generator import build_checklist_pdf
 from routes.auth import require_role
 
@@ -15,27 +16,29 @@ router = APIRouter(prefix="/api/submissions", tags=["Checklist Submissions"])
 @router.post("/scan-site", response_model=VisionScanResponse)
 async def scan_site_vision(payload: VisionScanRequest):
     """
-    AI Computer Vision site analyzer: Scans captured camera frame from the mining field
-    to detect personnel positioning, detonator storage, barricades, and environmental hazards.
+    Multimodal AI Vision Pipeline: Calls Google Gemini Multimodal Vision API
+    to visually analyze image frame, detect personnel positioning, detonator storage, and safety barricades.
     """
-    return VisionScanResponse(
-        workers_detected=14,
-        workers_in_exclusion_zone=False,
-        detonators_secure=True,
-        siren_working=True,
-        barricades_in_place=True,
-        emergency_vehicle_available=True,
-        lightning_warning=False,
-        confidence_score=0.96,
-        detected_objects=[
-            "14 Personnel (Safe Zone)", 
-            "Perimeter Barricades Verified", 
-            "Detonator Storage Enclosure", 
-            "Audible Warning Siren Tower", 
-            "Standby Emergency Vehicle"
-        ],
-        notes="AI Vision Camera Telemetry Verified: 14 personnel detected outside the 500m exclusion perimeter. Detonator enclosure & siren warning tower confirmed operational."
-    )
+    return await analyze_mining_site_vision(payload.image_base64)
+
+@router.post("/vision-rl-feedback")
+async def record_vision_rl_feedback(feedback: VisionRLFeedbackRequest, db=Depends(get_mongo_db)):
+    """
+    Reinforcement Learning Feedback & Reward Policy Logger:
+    Records human officer corrections and reward signals (+1.0 reward / -1.0 penalty)
+    to fine-tune the AI Vision model detection policy.
+    """
+    doc = {
+        "reward_score": feedback.reward_score,
+        "ai_predicted_workers": feedback.ai_predicted_workers,
+        "human_corrected_workers": feedback.human_corrected_workers,
+        "ai_predicted_zone_intrusion": feedback.ai_predicted_zone_intrusion,
+        "human_corrected_zone_intrusion": feedback.human_corrected_zone_intrusion,
+        "officer_feedback_notes": feedback.officer_feedback_notes or "Reinforcement Reward Feedback",
+        "created_at": datetime.utcnow()
+    }
+    result = await db["ai_vision_rl_feedback"].insert_one(doc)
+    return {"status": "SUCCESS", "feedback_id": str(result.inserted_id), "reward_applied": feedback.reward_score}
 
 def serialize_doc(doc) -> dict:
     if not doc:

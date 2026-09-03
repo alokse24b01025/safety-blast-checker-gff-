@@ -162,6 +162,15 @@ export async function scanSiteVision(imageBase64: string) {
   return handleResponse(res);
 }
 
+export async function sendVisionRLFeedback(payload: any) {
+  const res = await fetch(`${API_BASE}/api/submissions/vision-rl-feedback`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+}
+
 // --- Module 2: Blast Design Optimisation APIs ---
 export async function submitBlastPlan(payload: any) {
   const res = await fetch(`${API_BASE}/api/blast-plan/generate`, {
