@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, AlertOctagon, Loader2, Camera, Eye, ThumbsUp, ThumbsDown, Award, Activity, CheckCircle2 } from 'lucide-react';
+import { ShieldAlert, CheckCircle, AlertTriangle, FileText, Download, Check, X, AlertOctagon, Loader2, Camera, Eye, ThumbsUp, ThumbsDown, Award } from 'lucide-react';
 import SignatureCanvas from './SignatureCanvas.tsx';
 import RiskBeacon from './RiskBeacon.tsx';
 import { submitChecklist, submitOfficerReview, pdfDownloadUrl, scanSiteVision, sendVisionRLFeedback } from '../api/client.ts';
