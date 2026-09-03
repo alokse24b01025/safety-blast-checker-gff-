@@ -243,30 +243,28 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const startCameraScanner = async () => {
-    try {
-      setShowCameraModal(true);
-      const stream = await navigator.mediaDevices.getUserMedia({
+  const startCameraScanner = () => {
+    setShowCameraModal(true);
+    setScanningVision(false);
+
+    // Request camera hardware asynchronously without blocking detection timer
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({
         video: { facingMode: { ideal: 'environment' } }
-      });
-      setCameraStream(stream);
-      setTimeout(() => {
+      }).then(stream => {
+        setCameraStream(stream);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
-      }, 100);
-
-      // AUTOMATICALLY RUN AI DETECTION & POPULATE FORM AFTER CAMERA LOADS
-      setTimeout(() => {
-        captureAndAnalyzeFrame();
-      }, 1200);
-    } catch (err: any) {
-      console.error('Camera access error:', err);
-      // Fallback: If camera hardware blocked or unattached, still run vision detection & populate form
-      setTimeout(() => {
-        captureAndAnalyzeFrame();
-      }, 500);
+      }).catch(err => {
+        console.warn('Camera hardware notice:', err);
+      });
     }
+
+    // GUARANTEED AUTOMATIC SCAN & AUTO-STOP AFTER 1.5 SECONDS
+    setTimeout(() => {
+      captureAndAnalyzeFrame();
+    }, 1500);
   };
 
   const stopCameraScanner = () => {
