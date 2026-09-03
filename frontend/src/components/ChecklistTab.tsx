@@ -11,6 +11,13 @@ const getTodayDateString = () => {
   return `${yyyy}-${mm}-${dd}`;
 };
 
+const getCurrentTimeString = () => {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  return `${hh}:${mm}`;
+};
+
 const getFactorDetails = (result: any) => {
   const p = result.payload || {};
   
@@ -179,7 +186,7 @@ const initialState = {
   wind_speed_kmh: '',
   lightning_warning: false,
   blast_date: getTodayDateString(),
-  blast_time: '',
+  blast_time: getCurrentTimeString(),
   supervisor_available: true,
   blasting_officer_available: true,
   worker_count: '',
@@ -226,6 +233,11 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
 
   useEffect(() => {
     fetchWeatherByGPS();
+    setForm(prev => ({
+      ...prev,
+      blast_date: getTodayDateString(),
+      blast_time: getCurrentTimeString(),
+    }));
   }, []);
 
   const fetchWeatherByGPS = () => {
@@ -392,7 +404,7 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
       site_name: 'Nirsa Coal Mine - Bench #4',
       blast_id: `BLAST-${new Date().getFullYear()}-089`,
       blast_date: getTodayDateString(),
-      blast_time: '09:30',
+      blast_time: getCurrentTimeString(),
       temperature_c: '28.5',
       rainfall_mm: '0.0',
       wind_speed_kmh: '14.2',
