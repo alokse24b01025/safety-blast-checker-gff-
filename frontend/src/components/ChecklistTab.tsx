@@ -387,6 +387,39 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
   };
 
 
+  const autoFillValidChecklist = () => {
+    const today = new Date().toISOString().split('T')[0];
+    setForm({
+      site_name: 'Nirsa Coal Mine - Bench #4',
+      blast_id: `BLAST-${new Date().getFullYear()}-089`,
+      blast_date: today,
+      shift_type: 'DAY',
+      temperature_c: '28.5',
+      wind_speed_kmh: '14.2',
+      rainfall_mm: '0.0',
+      humidity_pct: '55',
+      pressure_hpa: '1013',
+      visibility_km: '10',
+      lightning_warning: false,
+      supervisor_present: true,
+      blasting_officer_present: true,
+      worker_count: '18',
+      workers_in_exclusion_zone: false,
+      safety_briefing_completed: true,
+      detonators_checked: true,
+      warning_siren_functional: true,
+      communication_functional: true,
+      emergency_vehicle_available: true,
+      exclusion_zone_radius_m: '500',
+      barricades_setup: true,
+      blast_design_approved: true,
+      escape_route_clear: true,
+    });
+    if (navigator.geolocation) {
+      fetchWeatherByGPS();
+    }
+  };
+
   // Helper to generate premium, high-contrast toggle styles
   const getToggleButtonClass = (isActive: boolean, isAlertColor: boolean) => {
     if (isActive) {
@@ -402,11 +435,21 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
     <div className="flex flex-col gap-8 font-sans max-w-4xl mx-auto w-full">
       {/* Intake Form Column */}
       <form onSubmit={handleSubmit} className="w-full bg-mining-card border border-mining-border p-6 rounded-2xl flex flex-col gap-6">
-        <div>
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <FileText className="text-mining-accent" /> Pre-Blast Safety Checklist Intake
-          </h2>
-          <p className="text-xs text-gray-400">Complete pre-operation validation checklist prior to blast scheduling</p>
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              <FileText className="text-mining-accent" /> Pre-Blast Safety Checklist Intake
+            </h2>
+            <p className="text-xs text-gray-400">Complete pre-operation validation checklist prior to blast scheduling</p>
+          </div>
+          <button
+            type="button"
+            onClick={autoFillValidChecklist}
+            className="px-3.5 py-1.5 bg-mining-accent/20 hover:bg-mining-accent/35 border border-mining-accent/50 rounded-xl text-xs font-mono font-bold text-mining-gold flex items-center gap-1.5 transition-all shadow-[0_0_12px_rgba(255,90,31,0.2)] w-fit"
+            title="Auto-fill verified valid operational parameters"
+          >
+            <span>⚡ AUTO-FILL VALID CHECKLIST</span>
+          </button>
         </div>
 
         {/* Site Details */}
