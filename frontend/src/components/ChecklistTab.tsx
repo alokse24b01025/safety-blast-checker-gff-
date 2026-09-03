@@ -388,32 +388,33 @@ export default function ChecklistTab({ onSubmissionSuccess, userRole }: Checklis
 
 
   const autoFillValidChecklist = () => {
-    const today = new Date().toISOString().split('T')[0];
     setForm({
       site_name: 'Nirsa Coal Mine - Bench #4',
       blast_id: `BLAST-${new Date().getFullYear()}-089`,
-      blast_date: today,
-      shift_type: 'DAY',
+      blast_date: getTodayDateString(),
+      blast_time: '09:30',
       temperature_c: '28.5',
-      wind_speed_kmh: '14.2',
       rainfall_mm: '0.0',
+      wind_speed_kmh: '14.2',
       humidity_pct: '55',
       pressure_hpa: '1013',
       visibility_km: '10',
       lightning_warning: false,
-      supervisor_present: true,
-      blasting_officer_present: true,
+      supervisor_available: true,
+      blasting_officer_available: true,
       worker_count: '18',
+      max_safe_worker_count: '25',
       workers_in_exclusion_zone: false,
       safety_briefing_completed: true,
-      detonators_checked: true,
-      warning_siren_functional: true,
-      communication_functional: true,
+      detonators_secure: true,
+      siren_working: true,
+      communication_working: true,
       emergency_vehicle_available: true,
-      exclusion_zone_radius_m: '500',
-      barricades_setup: true,
+      exclusion_zone_established: true,
+      barricades_in_place: true,
       blast_design_approved: true,
       escape_route_clear: true,
+      additional_notes: 'All pre-blast safety parameter checks completed cleanly.',
     });
     if (navigator.geolocation) {
       fetchWeatherByGPS();
