@@ -242,50 +242,50 @@ export default function LiveMiningCameraModal({ isOpen, onClose, onApplyDetectio
               <span className="text-[9px] text-blue-400">YOLOv8</span>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <span>Workers / Personnel:</span>
               {checklist.worker_detected ? (
-                <span className="text-green-400 font-bold">✓ Worker detected</span>
+                <span className="text-green-400 font-bold">✓ {checklist.worker_count || 1} Worker(s) detected</span>
               ) : (
-                <span className="text-gray-500">Not detected</span>
+                <span className="text-gray-500 font-bold">Not detected</span>
               )}
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <span>Safety Helmets:</span>
               {checklist.helmet_detected ? (
                 <span className="text-green-400 font-bold">✓ Helmet detected</span>
               ) : checklist.no_helmet_warning ? (
                 <span className="text-red-400 font-bold">🔴 No Helmet Warning</span>
               ) : (
-                <span className="text-amber-400">Needs verification</span>
+                <span className="text-amber-400 font-bold">Needs verification</span>
               )}
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <span>Mining Equipment:</span>
               {checklist.equipment_detected ? (
                 <span className="text-green-400 font-bold">✓ Equipment detected</span>
               ) : (
-                <span className="text-gray-500">Not detected</span>
+                <span className="text-gray-500 font-bold">Not detected</span>
               )}
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <span>Mining Area Lighting:</span>
               {checklist.lighting_detected ? (
                 <span className="text-green-400 font-bold">✓ Lighting detected</span>
               ) : (
-                <span className="text-gray-500">Not detected</span>
+                <span className="text-gray-500 font-bold">Not detected</span>
               )}
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <span>Detonator Enclosure:</span>
               {checklist.detonator_detected ? (
                 <span className="text-green-400 font-bold">✓ Verified Secure</span>
               ) : (
-                <span className="text-gray-500">Not detected</span>
+                <span className="text-gray-500 font-bold">Not detected</span>
               )}
             </div>
           </div>
