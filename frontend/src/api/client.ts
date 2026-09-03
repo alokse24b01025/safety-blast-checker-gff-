@@ -235,3 +235,13 @@ export async function fetchDashboardSummary() {
   });
   return handleResponse(res);
 }
+
+// --- Live WebRTC OpenCV YOLO Camera Vision API ---
+export async function detectMiningVisionStream(base64Image: string) {
+  const res = await fetch(`${API_BASE}/api/vision/detect-stream`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify({ image_base64: base64Image }),
+  });
+  return handleResponse(res);
+}

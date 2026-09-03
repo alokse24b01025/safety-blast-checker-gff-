@@ -75,6 +75,7 @@ app.include_router(checklist.router)
 app.include_router(blast_design.router)
 app.include_router(incidents.router)
 app.include_router(dashboard.router)
+app.include_router(vision_routes.router, prefix="/api/vision", tags=["Live Vision Camera"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)
